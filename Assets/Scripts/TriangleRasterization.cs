@@ -3,19 +3,29 @@ using System.Numerics;
 
 public static class TriangleRasterization
 {
-    public struct WritableBufferDescription
+    public struct WritableBufferInterface<TValue>
     {
-        public delegate void SetDelegate(int x, int y, int value);
+        public delegate void SetDelegate(int x, int y, TValue value);
+
         public SetDelegate Set;
+        public int BufferWidth;
+        public int BufferHeight;
+
+        public WritableBufferInterface(SetDelegate set, int bufferWidth, int bufferHeight)
+        {
+            Set = set;
+            BufferWidth = bufferWidth;
+            BufferHeight = bufferHeight;
+        }
     }
 
-    public static void RasterizeTriangle(WritableBufferDescription buffer, int width, int height, Vector2 v0, Vector2 v1, Vector2 v2, int value)
+    public static void RasterizeTriangle<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
     {
         // Find bounding box around the triangle
         int minX = (int)Math.Max(0, Math.Min(v0.X, Math.Min(v1.X, v2.X)));
         int minY = (int)Math.Max(0, Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)));
-        int maxX = (int)Math.Min(width - 1, Math.Max(v0.X, Math.Max(v1.X, v2.X)));
-        int maxY = (int)Math.Min(height - 1, Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)));
+        int maxX = (int)Math.Min(bufferInterface.BufferWidth - 1, Math.Max(v0.X, Math.Max(v1.X, v2.X)));
+        int maxY = (int)Math.Min(bufferInterface.BufferHeight - 1, Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)));
 
         for (int y = minY; y <= maxY; y++)
         {
@@ -25,7 +35,7 @@ public static class TriangleRasterization
                 if (IsPointInTriangle(new Vector2(x, y), v0, v1, v2))
                 {
                     // Set the pixel color
-                    buffer.Set(x, y, value);
+                    bufferInterface.Set(x, y, value);
                 }
             }
         }

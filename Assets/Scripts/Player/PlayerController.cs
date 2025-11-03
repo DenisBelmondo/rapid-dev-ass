@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
 
 namespace Player
 {
@@ -8,11 +8,11 @@ namespace Player
     {
         [Header("Movement Stats")]
         [SerializeField] private float baseSpeed = 5.0f;
-        
         private Rigidbody2D _rb;
+
         
-        //this list contains all the modifiers applied to the player.
-        private List<float> _speedModifiers;
+        
+        private List<float> _speedModifiers;//this list contains all the modifiers applied to the player.
 
         private InputSystem_Actions _playerInput;
 
@@ -26,6 +26,8 @@ namespace Player
             
             _playerInput = new InputSystem_Actions();
             _playerInput.Enable();
+            
+            _playerInput.Player.PlacePylon.performed += context => PlacePylon();
             
         }
         
@@ -69,5 +71,12 @@ namespace Player
         {
             _speedModifiers.Remove(modifier);
         }
+
+        private void PlacePylon()
+        {
+            PylonManager.Instance.RegisterPylon(transform);
+        }
+
+
     }
 }

@@ -77,7 +77,7 @@ namespace Managers
             if (interactedPylon == _activePylons[0])
             {
                 Debug.Log("Triangle formed!");
-                DebugTexter.Instance.UpdateText("Triangle Cleared!", Color.blue);
+                DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
                 
                 onTriangleFormed.Invoke(_activePylons[0].transform.position, _activePylons[1].transform.position, _activePylons[2].transform.position);
 

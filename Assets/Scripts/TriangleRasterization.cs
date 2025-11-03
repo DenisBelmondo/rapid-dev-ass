@@ -1,5 +1,5 @@
-using System;
 using System.Numerics;
+using System;
 
 public static class TriangleRasterization
 {
@@ -21,21 +21,21 @@ public static class TriangleRasterization
 
     public static void RasterizeTriangle<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
     {
-        // Find bounding box around the triangle
-        int minX = (int)Math.Max(0, Math.Min(v0.X, Math.Min(v1.X, v2.X)));
-        int minY = (int)Math.Max(0, Math.Min(v0.Y, Math.Min(v1.Y, v2.Y)));
-        int maxX = (int)Math.Min(bufferInterface.BufferWidth - 1, Math.Max(v0.X, Math.Max(v1.X, v2.X)));
-        int maxY = (int)Math.Min(bufferInterface.BufferHeight - 1, Math.Max(v0.Y, Math.Max(v1.Y, v2.Y)));
+        // Get the minimum and maximum bounding box
+        int minX = (int)Math.Min(Math.Min(v0.X, v1.X), v2.X);
+        int maxX = (int)Math.Max(Math.Max(v0.X, v1.X), v2.X);
+        int minY = (int)Math.Min(Math.Min(v0.Y, v1.Y), v2.Y);
+        int maxY = (int)Math.Max(Math.Max(v0.Y, v1.Y), v2.Y);
 
+        // Iterate through the bounding box
         for (int y = minY; y <= maxY; y++)
         {
             for (int x = minX; x <= maxX; x++)
             {
-                // Check if the point (x, y) is inside the triangle
-                if (IsPointInTriangle(new Vector2(x, y), v0, v1, v2))
+                // Calculate barycentric coordinates
+                if (IsPointInTriangle(new(x, y), v0, v1, v2))
                 {
-                    // Set the pixel color
-                    bufferInterface.Set(x, y, value);
+                    bufferInterface.Set?.Invoke(x, y, value);
                 }
             }
         }
@@ -49,5 +49,10 @@ public static class TriangleRasterization
         float t = 1 / (2 * area) * (v0.X * v1.Y - v0.Y * v1.X + (v0.Y - v1.Y) * p.X + (v1.X - v0.X) * p.Y);
 
         return s >= 0 && t >= 0 && (s + t) <= 1;
+    }
+
+    private static float TriangleArea(Vector2 v0, Vector2 v1, Vector2 v2)
+    {
+        return Math.Abs((v0.X * (v1.Y - v2.Y) + v1.X * (v2.Y - v0.Y) + v2.X * (v0.Y - v1.Y)) / 2.0f);
     }
 }

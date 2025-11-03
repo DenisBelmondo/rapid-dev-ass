@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,10 +12,12 @@ public class TileMapCollection : MonoBehaviour
 
     private float _t;
     private Transform _fogCutterRoot;
+    private HashSet<Vector2Int> _drawnTiles;
 
     public void Start()
     {
         _fogCutterRoot = transform.Find("FogCutters");
+        _drawnTiles = new();
     }
 
     public void Update()
@@ -30,6 +33,13 @@ public class TileMapCollection : MonoBehaviour
             BufferHeight = 1000,
             Set = (x, y, tile) =>
             {
+                var tilePos = new Vector2Int(x, y);
+                if (_drawnTiles.Contains(tilePos))
+                {
+                    return;
+                }
+
+                _drawnTiles.Add(tilePos);
                 Instantiate(DrawTile, new(x, y, 0), Quaternion.identity, _fogCutterRoot);
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), DrawTile);

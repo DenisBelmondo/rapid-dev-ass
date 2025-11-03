@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
 
 namespace Managers
 {
@@ -13,8 +15,15 @@ namespace Managers
         [SerializeField] private string mainMenuSceneName = "MainMenuScene";
         [SerializeField] private float returnToMenuDelay = 7f;
         
+        [FormerlySerializedAs("finalScoreUI")]
         [Header("Score UI")]
-        [SerializeField] private GameObject finalScoreUI;
+        [SerializeField] private GameObject finalScoreScreen;
+        
+        [Header("Fog Cutters")]
+        [SerializeField] private GameObject fogCutterParent; //TODO- Do this better lolol.
+        [SerializeField] private Tilemap backgroundTilemap; //TODO- Do this better lolol.
+
+        private float _scorePercent;
         
         public float CurrentTime { get; private set; }
 
@@ -22,12 +31,13 @@ namespace Managers
         
         void Start()
         {
+            _scorePercent = 0;
             CurrentTime = startTimeSeconds;
             _isTimerRunning = true;
 
-            if (finalScoreUI != null)
+            if (finalScoreScreen != null)
             {
-                finalScoreUI.SetActive(false);
+                finalScoreScreen.SetActive(false);
             }
             else
             {
@@ -60,10 +70,29 @@ namespace Managers
             
             Debug.Log("Time's up!");
             
-            finalScoreUI.SetActive(true);
+            finalScoreScreen.SetActive(true);
+            finalScoreScreen.GetComponentInChildren<ScoreUI>().UpdateScore(GetScore()); //TODO- Jesus christ...
+            
             StartCoroutine(ReturnToMenu(returnToMenuDelay));
 
 
+        }
+
+        float GetScore()
+        {
+            float bgTileCount = 0;
+            
+            foreach (var pos in backgroundTilemap.cellBounds.allPositionsWithin)
+            {
+                // Check if a tile *actually* exists at this position in the grid
+                if (backgroundTilemap.HasTile(pos))
+                {
+                    bgTileCount++;
+                }
+            }
+            Debug.Log("Tiles there are:" + bgTileCount + "Tiles");
+            Debug.Log("Fog Cutters: " + fogCutterParent.transform.childCount);
+            return fogCutterParent.transform.childCount / bgTileCount * 100;
         }
 
         IEnumerator ReturnToMenu(float secs)

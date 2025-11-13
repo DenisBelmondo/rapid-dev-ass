@@ -10,13 +10,14 @@ public class TileMapCollection : MonoBehaviour
     [SerializeField]
     public GameObject DrawTile;
 
+    [SerializeField]
+    public Tilemap FogTilemap;
+
     private float _t;
-    private Transform _fogCutterRoot;
     private HashSet<Vector2Int> _drawnTiles;
 
     public void Start()
     {
-        _fogCutterRoot = transform.Find("FogCutters");
         _drawnTiles = new();
     }
 
@@ -39,9 +40,9 @@ public class TileMapCollection : MonoBehaviour
                     return;
                 }
 
+                FogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
-                Instantiate(DrawTile, new(x, y, 0), Quaternion.identity, _fogCutterRoot);
             },
-        },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), DrawTile);
+        },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }
 }

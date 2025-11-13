@@ -23,7 +23,7 @@ namespace Managers
         [SerializeField] private GameObject fogCutterParent; //TODO- Do this better lolol.
         [SerializeField] private Tilemap backgroundTilemap; //TODO- Do this better lolol.
 
-        private float _scorePercent;
+        //private float _scorePercent;
         
         public float CurrentTime { get; private set; }
 
@@ -31,7 +31,7 @@ namespace Managers
         
         void Start()
         {
-            _scorePercent = 0;
+            //_scorePercent = 0;
             CurrentTime = startTimeSeconds;
             _isTimerRunning = true;
 
@@ -90,8 +90,8 @@ namespace Managers
                     bgTileCount++;
                 }
             }
-            Debug.Log("Tiles there are:" + bgTileCount + "Tiles");
-            Debug.Log("Fog Cutters: " + fogCutterParent.transform.childCount);
+            //Debug.Log("Tiles there are:" + bgTileCount + "Tiles");
+            //Debug.Log("Fog Cutters: " + fogCutterParent.transform.childCount);
             return fogCutterParent.transform.childCount / bgTileCount * 100;
         }
 

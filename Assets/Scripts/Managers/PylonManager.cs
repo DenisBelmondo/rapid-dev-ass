@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using Core;
-using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Managers
 {
-    public class PylonManager : Singleton<PylonManager>
+    public class PylonManager : Singleton<PylonManager>, IService
     {
+        protected override bool PersistBetweenScenes => false;
+        
         private List<GameObject> _activePylons = new List<GameObject>();
         private HashSet<Vector3> _pylonPositions = new HashSet<Vector3>();
 
@@ -21,8 +22,9 @@ namespace Managers
         protected override void Awake()
         {
             base.Awake();
+            ServiceManager.Instance.RegisteredService(this);
             
-            DebugTexter.Instance.UpdateText("Find somewhere to place your first pylon!", Color.yellow);
+            //DebugTexter.Instance.UpdateText("Find somewhere to place your first pylon!", Color.yellow);
         }
 
         public void RegisterPylon(Transform playerTransform)
@@ -30,7 +32,7 @@ namespace Managers
             if (_activePylons.Count >= maxPylons)
             {
                 //Debug.Log("Pylon limit reached. Clear the current triangle first!");
-                DebugTexter.Instance.UpdateText("Pylon limit reached. Clear the current triangle first!", Color.red);
+                //DebugTexter.Instance.UpdateText("Pylon limit reached. Clear the current triangle first!", Color.red);
                 return;
             }
             
@@ -38,7 +40,7 @@ namespace Managers
 
             if (_pylonPositions.Contains(snappedPos))
             {
-                DebugTexter.Instance.UpdateText("There's already a pylon at this position!", Color.red);
+                //DebugTexter.Instance.UpdateText("There's already a pylon at this position!", Color.red);
                 return;
             }
             
@@ -57,11 +59,11 @@ namespace Managers
 
             if (_activePylons.Count < maxPylons)
             {
-                DebugTexter.Instance.UpdateText($"Pylon Placed! {maxPylons - _activePylons.Count} Pylons left!", Color.yellow);
+                //DebugTexter.Instance.UpdateText($"Pylon Placed! {maxPylons - _activePylons.Count} Pylons left!", Color.yellow);
             }
             else
             {
-                DebugTexter.Instance.UpdateText("Go back to the first pylon you placed to clear the triangle!", Color.yellow);
+                //DebugTexter.Instance.UpdateText("Go back to the first pylon you placed to clear the triangle!", Color.yellow);
             }
             
         }
@@ -77,7 +79,7 @@ namespace Managers
             if (interactedPylon == _activePylons[0])
             {
                 Debug.Log("Triangle formed!");
-                DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
+                //DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
                 
                 onTriangleFormed.Invoke(_activePylons[0].transform.position, _activePylons[1].transform.position, _activePylons[2].transform.position);
 
@@ -101,11 +103,12 @@ namespace Managers
             float snappedZ = rawPos.z;
             
             return new Vector3(snappedX, snappedY, snappedZ);
-
-
         }
-        
 
 
+        public void Initialize()
+        {
+            //TODO:Implement this jawn
+        }
     }
 }

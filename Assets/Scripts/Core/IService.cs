@@ -1,8 +1,6 @@
-using System;
-
 namespace Core
 {
-    public interface IService : IDisposable
+    public interface IService
     {
         void Initialize();
     }

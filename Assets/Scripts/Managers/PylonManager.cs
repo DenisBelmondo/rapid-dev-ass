@@ -8,6 +8,8 @@ namespace Managers
 {
     public class PylonManager : Singleton<PylonManager>, IService
     {
+        protected override bool PersistBetweenScenes => false;
+        
         private List<GameObject> _activePylons = new List<GameObject>();
         private HashSet<Vector3> _pylonPositions = new HashSet<Vector3>();
 

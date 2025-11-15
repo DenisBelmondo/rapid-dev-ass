@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Managers
 {
-    public class PylonManager : Singleton<PylonManager>, IService
+    public class PylonManager : Singleton<PylonManager>
     {
         protected override bool PersistBetweenScenes => false;
         
@@ -18,14 +18,7 @@ namespace Managers
         public GameObject pylonPrefab;
         
         public UnityEvent<Vector3, Vector3, Vector3> onTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
-
-        protected override void Awake()
-        {
-            base.Awake();
-            ServiceManager.Instance.RegisteredService(this);
-            
-            //DebugTexter.Instance.UpdateText("Find somewhere to place your first pylon!", Color.yellow);
-        }
+        
 
         public void RegisterPylon(Transform playerTransform)
         {
@@ -104,11 +97,6 @@ namespace Managers
             
             return new Vector3(snappedX, snappedY, snappedZ);
         }
-
-
-        public void Initialize()
-        {
-            //TODO:Implement this jawn
-        }
+        
     }
 }

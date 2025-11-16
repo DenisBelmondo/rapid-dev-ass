@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Managers;
+using Player;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 /// <summary>
@@ -10,12 +12,14 @@ public class Game : MonoBehaviour
 {
     private LineRenderer _lines;
     private List<GameObject> _pylonStack = new();
-    private Transform _playerTransform;
+    //private Transform _playerTransform;
+    private CrewManager _crewManager;
 
     public virtual void Start()
     {
         _lines = transform.Find("Lines").GetComponent<LineRenderer>();
-        _playerTransform = transform.Find("Crew");
+        //_playerTransform = transform.Find("Crew");
+        _crewManager = CrewManager.Instance;
         PylonManager.Instance.PylonRegistered.AddListener(OnPylonRegistered);
         PylonManager.Instance.onTriangleFormed.AddListener(OnTriangleFormed);
     }
@@ -24,7 +28,7 @@ public class Game : MonoBehaviour
     {
         if (_pylonStack.Count > 0)
         {
-            _lines.SetPosition(_lines.positionCount - 1, _playerTransform.position);
+            _lines.SetPosition(_lines.positionCount - 1, _crewManager.Leader.transform.position);
         }
     }
 

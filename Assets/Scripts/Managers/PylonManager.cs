@@ -51,7 +51,7 @@ namespace Managers
 
             if (_activePylons.Count == 0)
             {
-                newPylon.GetComponent<SpriteRenderer>().color = Color.red;
+                newPylon.GetComponent<SpriteRenderer>().color = Color.yellow;
             }
 
             _activePylons.Add(newPylon);

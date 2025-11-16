@@ -5,22 +5,34 @@ namespace Enemy
 {
     public class EnemyTriggerForwarder : MonoBehaviour
     {
+        //stupid fucking worthless unity
         [SerializeField] private EnemyInstance enemyInstance;
-        [SerializeField] private bool isAggroRange;
+
+        private enum Type
+        {
+            Aggro,
+            Vision,
+            Kill
+        }
+        
+        [SerializeField] private Type triggerType;
 
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent<CharacterInstance>(out var character))
             {
-                if (isAggroRange)
+                switch (triggerType)
                 {
-                    enemyInstance.OnPlayerEnterAggroRange(character);
+                    case Type.Aggro:
+                        enemyInstance.OnPlayerEnterAggroRange(character);
+                        break;
+                    case Type.Vision:
+                        enemyInstance.OnPlayerEnterVisibleRange(character);
+                        break;
+                    case Type.Kill:
+                        enemyInstance.OnPlayerEnterKillRange(character);
+                        break;
                 }
-                else
-                {
-                    enemyInstance.OnPlayerEnterVisibleRange(character);
-                }
-                
             }
         }
 
@@ -28,15 +40,11 @@ namespace Enemy
         {
             if (collision.TryGetComponent<CharacterInstance>(out var character))
             {
-                if (isAggroRange)
-                {
-                    //do nothing?
-                    //enemyInstance.OnPlayerExitAggroRange();
-                }
-                else
+                if (triggerType == Type.Vision)
                 {
                     enemyInstance.OnPlayerExitVisibleRange(character);
                 }
+                
             }
         }
     }

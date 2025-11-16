@@ -15,11 +15,15 @@ namespace Enemy
         */
 
         [Header("Stats")] 
-        public float speed = 4;
+        public float walkSpeed = 4;
+        public float runSpeed = 4;
+        
         public float aggroDurationInSeconds = 4;
+        public float cooldown = 2f;
 
         [Header("Radii")] 
-        public float visibleRangeRadius = 5f;
+        public float visibleRangeRadius = 8f;
         public float aggroRangeRadius = 3f;
+        public float killRangeRadius = 0.5f;
     }
 }

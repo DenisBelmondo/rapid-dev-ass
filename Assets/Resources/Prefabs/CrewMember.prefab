@@ -267,7 +267,7 @@ MonoBehaviour:
   characterData: {fileID: 11400000, guid: a515a841d3a06d943bd82a713f97def9, type: 2}
   food: 100
   mood: 100
-  minFollowDistance: 1.5
+  minFollowDistance: 1
   maxFollowDistance: 5
 --- !u!114 &1042693176230731151
 MonoBehaviour:

@@ -6,7 +6,7 @@ namespace Player
     public class CharacterMovement : MonoBehaviour
     {
         private Rigidbody2D _rb;
-        private CharacterInstance characterInstance;
+        private CharacterInstance _characterInstance;
         private Vector2 _moveDirection;
 
 		//leashing
@@ -34,7 +34,7 @@ namespace Player
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
-            characterInstance = GetComponent<CharacterInstance>();
+            _characterInstance = GetComponent<CharacterInstance>();
             _rb.gravityScale = 0;
             _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
@@ -114,7 +114,7 @@ namespace Player
 
         LeashPosition CalculateTargetLeashPosition(Vector3[] path)
         {
-            float desiredFollowDistance = characterInstance.GetFollowDistance();
+            float desiredFollowDistance = _characterInstance.GetFollowDistance();
             
             //get the state of the character we're following
             int followedCharIndex = _characterToFollow.LeashPathIndex;

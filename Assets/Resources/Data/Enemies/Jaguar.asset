@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Jaguar
   m_EditorClassIdentifier: 
   Name: Jaguar
-  speed: 4
+  walkSpeed: 4
+  runSpeed: 4
   aggroDurationInSeconds: 4
-  visibleRangeRadius: 8
-  aggroRangeRadius: 3
+  visibleRangeRadius: 14
+  aggroRangeRadius: 5
+  killRangeRadius: 0.5

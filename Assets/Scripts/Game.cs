@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 /// <summary>
@@ -6,4 +8,44 @@ using UnityEngine;
 /// </summary>
 public class Game : MonoBehaviour
 {
+    private LineRenderer _lines;
+    private List<GameObject> _pylonStack = new();
+    private Transform _playerTransform;
+
+    public void Start()
+    {
+        _lines = transform.Find("Lines").GetComponent<LineRenderer>();
+        _playerTransform = transform.Find("Player");
+        PylonManager.Instance.PylonRegistered.AddListener(OnPylonRegistered);
+        PylonManager.Instance.onTriangleFormed.AddListener(OnTriangleFormed);
+    }
+
+    public void Update()
+    {
+        if (_pylonStack.Count > 0)
+        {
+            _lines.SetPosition(_lines.positionCount - 1, _playerTransform.position);
+        }
+    }
+
+    public void OnPylonRegistered(GameObject pylon)
+    {
+        _pylonStack.Add(pylon);
+        _lines.positionCount = _pylonStack.Count + 1;
+
+        for (int i = 0; i < _pylonStack.Count; i++)
+        {
+            _lines.SetPosition(i, _pylonStack[i].transform.position);
+        }
+    }
+
+    public void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        for (int i = 0; i < _lines.positionCount; i++)
+        {
+            _lines.SetPosition(i, Vector3.zero);
+        }
+
+        _pylonStack.Clear();
+    }
 }

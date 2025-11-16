@@ -2,6 +2,7 @@ using System;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enemy
 {
@@ -15,7 +16,7 @@ namespace Enemy
         private float _aggroDurationInSeconds;
         private float _aggroTimer;
         private CharacterInstance _target;
-        private float _cooldownTimer;
+        public float cooldownTimer;
         
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
@@ -91,22 +92,26 @@ namespace Enemy
 
             if (_target == null || _aggroTimer <= 0)
             {
-                CurrentState = State.Cooldown;
-                _cooldownTimer = _enemyInstance.enemyData.cooldown;
-                _target = null;
-                _rb.linearVelocity = Vector3.zero;
-                _animator.SetTrigger("Cooldown");
+                StartCooldown();
                 return;
             }
             
             _rb.linearVelocity = (_target.transform.position - transform.position).normalized * _enemyInstance.enemyData.runSpeed;
         }
 
+        public void StartCooldown()
+        {
+            CurrentState = State.Cooldown;
+            cooldownTimer = _enemyInstance.enemyData.cooldown;
+            _target = null;
+            _rb.linearVelocity = Vector3.zero;
+            _animator.SetTrigger("Cooldown");
+        }
         void HandleCooldown()
         {
-            _cooldownTimer -= Time.deltaTime;
+            cooldownTimer -= Time.deltaTime;
 
-            if (_cooldownTimer <= 0)
+            if (cooldownTimer <= 0)
             {
                 CurrentState = State.Idle;
             }

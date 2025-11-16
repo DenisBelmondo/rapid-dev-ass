@@ -35,7 +35,11 @@ namespace Enemy
         public void OnPlayerEnterAggroRange(CharacterInstance character)
         {
             //Debug.Log($"{character.name} entered aggro range!");
-            _enemyMovement.StartChasing(CrewManager.Instance.GetLastMember());
+            if (_enemyMovement.cooldownTimer <= 0)
+            {
+                _enemyMovement.StartChasing(CrewManager.Instance.GetLastMember());
+            }
+            
         }
 
         public void OnPlayerEnterVisibleRange(CharacterInstance character)
@@ -66,7 +70,11 @@ namespace Enemy
         
         public void OnPlayerEnterKillRange(CharacterInstance character)
         {
-            character.Die();
+            if (_enemyMovement.cooldownTimer <= 0)
+            {
+                character.Die();
+                _enemyMovement.StartCooldown();
+            }
         }
     }
 }

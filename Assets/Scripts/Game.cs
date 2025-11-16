@@ -12,15 +12,15 @@ public class Game : MonoBehaviour
     private List<GameObject> _pylonStack = new();
     private Transform _playerTransform;
 
-    public void Start()
+    public virtual void Start()
     {
         _lines = transform.Find("Lines").GetComponent<LineRenderer>();
-        _playerTransform = transform.Find("Player");
+        _playerTransform = transform.Find("Crew");
         PylonManager.Instance.PylonRegistered.AddListener(OnPylonRegistered);
         PylonManager.Instance.onTriangleFormed.AddListener(OnTriangleFormed);
     }
 
-    public void Update()
+    public virtual void Update()
     {
         if (_pylonStack.Count > 0)
         {
@@ -28,7 +28,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void OnPylonRegistered(GameObject pylon)
+    public virtual void OnPylonRegistered(GameObject pylon)
     {
         _pylonStack.Add(pylon);
         _lines.positionCount = _pylonStack.Count + 1;
@@ -39,7 +39,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
+    public virtual void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
     {
         for (int i = 0; i < _lines.positionCount; i++)
         {

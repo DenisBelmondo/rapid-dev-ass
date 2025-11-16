@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f128551d139af04b918df74de519b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialGameScreen: {fileID: 3741692185875536836, guid: 15ff1e4134289194386e4ea126bdc6ba, type: 3}
+  InitialGameScreen: {fileID: 3741692185875536836, guid: 13847824bbd217313826fa8bbfc12b11, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

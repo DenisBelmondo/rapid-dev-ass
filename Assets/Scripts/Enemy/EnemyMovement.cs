@@ -16,6 +16,9 @@ namespace Enemy
         private float _aggroTimer;
         private CharacterInstance _target;
         private float _cooldownTimer;
+        
+        private Animator _animator;
+        private SpriteRenderer _spriteRenderer;
 
         private enum State
         {
@@ -29,6 +32,9 @@ namespace Enemy
         {
             _rb = GetComponent<Rigidbody2D>();
             _enemyInstance = GetComponent<EnemyInstance>();
+            
+            _animator = GetComponent<Animator>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void Start()
@@ -58,6 +64,7 @@ namespace Enemy
             _target = target;
             CurrentState = State.Chasing;
             _aggroTimer = _enemyInstance.enemyData.aggroDurationInSeconds;
+            _animator.SetTrigger("Aggro");
         }
         
         void HandleIdle()
@@ -68,6 +75,18 @@ namespace Enemy
 
         void HandleChasing()
         {
+            if (_target != null)
+            {
+                if (transform.position.x > _target.transform.position.x)
+                {
+                    _spriteRenderer.flipX = true;
+                }
+                else
+                {
+                    _spriteRenderer.flipX = false;
+                }
+            }
+            
             _aggroTimer -= Time.deltaTime;
 
             if (_target == null || _aggroTimer <= 0)
@@ -76,6 +95,7 @@ namespace Enemy
                 _cooldownTimer = _enemyInstance.enemyData.cooldown;
                 _target = null;
                 _rb.linearVelocity = Vector3.zero;
+                _animator.SetTrigger("Cooldown");
                 return;
             }
             

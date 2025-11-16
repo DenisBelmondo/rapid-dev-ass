@@ -21,6 +21,7 @@ namespace Enemy
         private Coroutine _vignetteFadeCoroutine;
 
         private EnemyMovement _enemyMovement;
+        
 
         void Start()
         {
@@ -59,7 +60,7 @@ namespace Enemy
             if (_charactersInVisibleRange.Count == 0)
             {
                 vignette.GetComponent<Animator>().SetTrigger("StartFadeOut");
-                Debug.Log("FADEOUT!!!");
+                //Debug.Log("FADEOUT!!!");
             }
         }
         

@@ -73,10 +73,26 @@ namespace Player
             else
             {
                 UpdateLeashPosition();
-                if (Vector3.Distance(transform.position, _leashTargetWorldPosition) > _movementStoppingDistance)
+
+                Vector3 currentPos = transform.position;
+                Vector3 targetPos = _leashTargetWorldPosition;
+                float distanceToTarget = Vector3.Distance(currentPos, targetPos);
+
+                if (distanceToTarget > _movementStoppingDistance)
                 {
-                    Vector3 direction = (_leashTargetWorldPosition - transform.position).normalized;
-                    _rb.linearVelocity = direction * CrewManager.Instance.GroupSpeed;
+                    float speed = CrewManager.Instance.GroupSpeed;
+                    Vector3 direction = (targetPos - currentPos).normalized;
+                    
+                    //check for overshoot
+                    if((speed * Time.fixedDeltaTime) > distanceToTarget)
+                    {
+                        //haha... what could possibly go wrong?
+                        _rb.MovePosition(targetPos);
+                    }
+                    else
+                    {
+                        _rb.linearVelocity = direction * speed;
+                    }
                 }
                 else
                 {

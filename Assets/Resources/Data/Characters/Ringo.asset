@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8e69983b54099d43b05889ce80338e6, type: 3}
-  m_Name: BaseCharacter
+  m_Name: Ringo
   m_EditorClassIdentifier: 
-  characterName: Adventurer
-  characterSprite: {fileID: 9179965436570372803, guid: 4a29487be4a4b474cb2939e538153c24, type: 3}
-  corpseSprite: {fileID: 21300000, guid: b55e77eeacb889345bb584700e05acb9, type: 3}
+  characterName: Ringo
+  characterSprite: {fileID: -1125299145, guid: 4a29487be4a4b474cb2939e538153c24, type: 3}
+  corpsePrefab: {fileID: 8123960346245887608, guid: 24d0d6ee16b0a2b448103b327f3ac49c, type: 3}

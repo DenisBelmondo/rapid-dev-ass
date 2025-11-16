@@ -7,6 +7,8 @@ namespace Player
     {
         public string characterName = "Adventurer";
         
-        //TODO- add sprites, that sorta thing.
+        public Sprite characterSprite;
+
+        public GameObject corpsePrefab;
     }
 }

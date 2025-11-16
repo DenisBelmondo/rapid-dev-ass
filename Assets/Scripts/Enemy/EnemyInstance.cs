@@ -56,5 +56,14 @@ namespace Enemy
                 Debug.Log("FADEOUT!!!");
             }
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent<CharacterInstance>(out var character))
+            {
+                character.Die();
+            }
+        }
+        
     }
 }

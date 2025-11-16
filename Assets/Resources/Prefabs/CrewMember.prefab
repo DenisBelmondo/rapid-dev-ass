@@ -267,6 +267,8 @@ MonoBehaviour:
   characterData: {fileID: 11400000, guid: a515a841d3a06d943bd82a713f97def9, type: 2}
   food: 100
   mood: 100
+  minFollowDistance: 1.5
+  maxFollowDistance: 5
 --- !u!114 &1042693176230731151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,4 +281,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3053194631d904e4dac415f7f8b7799b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followDistance: 1.5

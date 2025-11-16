@@ -55,8 +55,8 @@ MonoBehaviour:
   - {fileID: 4838178195619867889}
   - {fileID: 7385643734850229986}
   - {fileID: 2543138375502089411}
-  minGroupSpeed: 0.8
-  maxGroupSpeed: 5
+  minGroupSpeed: 2
+  maxGroupSpeed: 7
 --- !u!114 &2174363136766747588
 MonoBehaviour:
   m_ObjectHideFlags: 0

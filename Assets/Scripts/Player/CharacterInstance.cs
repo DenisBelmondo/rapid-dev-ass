@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Player
@@ -20,6 +21,14 @@ namespace Player
 		public float minFollowDistance = 1.5f;
 		public float maxFollowDistance = 5f;
 		
+		private SpriteRenderer _spriteRenderer;
+
+		private void Awake()
+		{
+			_spriteRenderer = GetComponent<SpriteRenderer>();
+			_spriteRenderer.sprite = characterData.characterSprite;
+		}
+
 		//follow distance should be relative to the leader, so we calculate follow distance in this nifty function.
 		public float GetFollowDistance()
 		{
@@ -34,8 +43,15 @@ namespace Player
 			
 			float dynamicMaxDistance = Mathf.Lerp(minFollowDistance, maxFollowDistance, speedRatio);
 			return Mathf.Lerp(dynamicMaxDistance, minFollowDistance, food/100f);
-			
-			
+		}
+
+		public void Die()
+		{
+			var crewManager = CrewManager.Instance;
+			Instantiate(characterData.corpsePrefab, transform.position, Quaternion.identity);
+			crewManager.crewMembers.Remove(this);
+			OnStatsChanged?.Invoke();
+			Destroy(gameObject);
 		}
     }
 }

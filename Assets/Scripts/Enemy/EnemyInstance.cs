@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enemy
@@ -18,7 +19,6 @@ namespace Enemy
         [Header("Vignette")]
         [SerializeField] private GameObject vignette;
         private List<CharacterInstance> _charactersInVisibleRange = new List<CharacterInstance>();
-        private Coroutine _vignetteFadeCoroutine;
 
         private EnemyMovement _enemyMovement;
         private AudioSource _audioSource;
@@ -49,12 +49,9 @@ namespace Enemy
             if (!_charactersInVisibleRange.Contains(character))
             {
                 _charactersInVisibleRange.Add(character);
+                UpdateVignetteState();
             }
-
-            if (_charactersInVisibleRange.Count == 1)
-            {
-                vignette.GetComponent<Animator>().SetTrigger("StartFadeIn");
-            }
+            
         }
 
         public void OnPlayerExitVisibleRange(CharacterInstance character)
@@ -65,7 +62,8 @@ namespace Enemy
             }
             if (_charactersInVisibleRange.Count == 0)
             {
-                vignette.GetComponent<Animator>().SetTrigger("StartFadeOut");
+                UpdateVignetteState();
+                //vignette.GetComponent<Animator>().SetTrigger("StartFadeOut");
                 //Debug.Log("FADEOUT!!!");
             }
         }
@@ -79,6 +77,12 @@ namespace Enemy
                 _audioSource.Play();
                 _enemyMovement.StartCooldown();
             }
+        }
+
+        private void UpdateVignetteState()
+        {
+            bool isVisible = _charactersInVisibleRange.Count > 0;
+            vignette.GetComponent<Animator>().SetBool("IsVisible", isVisible);
         }
     }
 }

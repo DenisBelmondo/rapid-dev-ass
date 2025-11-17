@@ -54,9 +54,11 @@ namespace Player
             if (Leader != previousLeader)
             {
                 LeaderMovement = (Leader != null) ? Leader.GetComponent<CharacterMovement>() : null;
-                UpdateFollowTargets();
+                //UpdateFollowTargets();
                 PlayerPathManager.Instance.SetLeader(Leader.transform);
             }
+            UpdateFollowTargets();
+            Debug.Log(crewMembers.Count);
         }
 
         private void UpdateFollowTargets()

@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace UI
 {
@@ -17,13 +16,26 @@ namespace UI
         [SerializeField] private float startTimeSeconds = 300f;
         private Coroutine _fadeCoroutine;
         
+        
+        
         public float CurrentTime { get; private set; }
         private bool _isTimerRunning = true;
         private float _scorePercent;
 
+        private int _tileCount = 0;
+        private int _fullMapCount = 0;
+        [SerializeField] private Tilemap _gameTilemap;
+
         private void Awake()
         {
             PlayIntroText();
+            foreach (var pos in _gameTilemap.cellBounds.allPositionsWithin)
+            {
+                if (_gameTilemap.HasTile(pos))
+                {
+                    _fullMapCount++;
+                }
+            }
         }
 
         private void Start()
@@ -31,6 +43,7 @@ namespace UI
             _scorePercent = 0;
             CurrentTime = startTimeSeconds;
             _isTimerRunning = true;
+            Debug.Log($"{_fullMapCount}");
         }
 
         private void Update()
@@ -45,8 +58,17 @@ namespace UI
                     TimeIsUp();
                 }
             }
+            
+            _scorePercent = (int)(((float)_tileCount / (float)_fullMapCount) * 100);
+            Debug.Log(_tileCount);
+            _percentText.text = $"{_scorePercent}%";
         }
 
+        public void IncrementTiles()
+        {
+            _tileCount++;
+        }
+        
         private void PlayIntroText()
         {
             if (_fadeCoroutine != null)
@@ -106,5 +128,6 @@ namespace UI
             _winText.gameObject.SetActive(true);
             Time.timeScale = 0;
         }
+        
     }
 }

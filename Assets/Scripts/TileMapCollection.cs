@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,9 +16,13 @@ public class TileMapCollection : MonoBehaviour
 
     private float _t;
     private HashSet<Vector2Int> _drawnTiles;
+    
+    //camilo stuff. i am so sorry.
+    private ProtoScorer _scorer;
 
     public void Start()
     {
+        _scorer = FindFirstObjectByType<ProtoScorer>();
         _drawnTiles = new();
     }
 
@@ -42,6 +47,7 @@ public class TileMapCollection : MonoBehaviour
 
                 FogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
+                _scorer.IncrementTiles();
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }

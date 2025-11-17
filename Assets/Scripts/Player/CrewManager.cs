@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core;
 using Managers;
+using UI;
 using UnityEngine;
 
 namespace Player
@@ -45,7 +46,12 @@ namespace Player
         }
         private void UpdateCrewOrder()
         {
-            if (crewMembers.Count == 0) return;
+            if (crewMembers.Count == 0)
+            {
+                FindAnyObjectByType<ProtoScorer>().PlayGameOverText();
+                Debug.Log("GAME OVER!!");
+                return;
+            }
             
             var previousLeader = Leader;
             crewMembers = crewMembers.OrderByDescending(guy => guy.food).ToList();

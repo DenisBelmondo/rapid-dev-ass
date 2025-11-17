@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
         //_playerTransform = transform.Find("Crew");
         _crewManager = CrewManager.Instance;
         PylonManager.Instance.PylonRegistered.AddListener(OnPylonRegistered);
+        PylonManager.Instance.OnPylonsCleared.AddListener(OnPylonsCleared);
         PylonManager.Instance.onTriangleFormed.AddListener(OnTriangleFormed);
     }
 
@@ -53,6 +54,16 @@ public class Game : MonoBehaviour
         }
         
         
+    }
+
+    public virtual void OnPylonsCleared()
+    {
+        for (int i = 0; i < _lines.positionCount; i++)
+        {
+            _lines.SetPosition(i, Vector3.zero);
+        }
+
+        _pylonStack.Clear();
     }
 
     public virtual void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)

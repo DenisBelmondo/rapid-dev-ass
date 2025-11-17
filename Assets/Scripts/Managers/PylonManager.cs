@@ -19,6 +19,7 @@ namespace Managers
 
         public UnityEvent<Vector3, Vector3, Vector3> onTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
         public UnityEvent<GameObject> PylonRegistered = new();
+        public UnityEvent OnPylonsCleared = new UnityEvent();
 
         private AudioSource _audioSource;
 
@@ -99,6 +100,18 @@ namespace Managers
             {
                 Debug.Log("This isn't the first pylon you placed!");
             }
+        }
+
+        public void ClearPylons()
+        {
+            foreach (var pylon in _activePylons)
+            {
+                Destroy(pylon.gameObject);
+            }
+            _activePylons.Clear();
+            _pylonPositions.Clear();
+            
+            OnPylonsCleared.Invoke();
         }
 
         private Vector3 GetSnappedPosition(Vector3 rawPos)

@@ -1,4 +1,6 @@
 using System;
+using Managers;
+using Objects;
 using UnityEngine;
 
 namespace Player
@@ -51,6 +53,7 @@ namespace Player
 			Instantiate(characterData.corpsePrefab, transform.position, Quaternion.identity);
 			crewManager.crewMembers.Remove(this);
 			OnStatsChanged?.Invoke();
+			PylonManager.Instance.ClearPylons();
 			Destroy(gameObject);
 		}
     }

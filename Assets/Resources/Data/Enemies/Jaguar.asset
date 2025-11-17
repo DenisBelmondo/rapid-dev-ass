@@ -19,6 +19,6 @@ MonoBehaviour:
   runSpeed: 4
   aggroDurationInSeconds: 4
   cooldown: 2
-  visibleRangeRadius: 14
-  aggroRangeRadius: 5
+  visibleRangeRadius: 8
+  aggroRangeRadius: 4
   killRangeRadius: 0.5

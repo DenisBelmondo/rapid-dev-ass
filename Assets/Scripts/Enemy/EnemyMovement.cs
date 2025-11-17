@@ -20,6 +20,8 @@ namespace Enemy
         
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
+        
+        private AudioSource _audioSource;
 
         private enum State
         {
@@ -36,6 +38,7 @@ namespace Enemy
             
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Start()
@@ -63,6 +66,12 @@ namespace Enemy
         public void StartChasing(CharacterInstance target)
         {
             _target = target;
+
+            if (CurrentState != State.Chasing)
+            {
+                _audioSource.resource = _enemyInstance.enemyData.alertSound;
+                _audioSource.Play();
+            }
             CurrentState = State.Chasing;
             _aggroTimer = _enemyInstance.enemyData.aggroDurationInSeconds;
             _animator.SetTrigger("Aggro");

@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Jaguar
   m_EditorClassIdentifier: 
   Name: Jaguar
+  alertSound: {fileID: 8300000, guid: 8aec74cda5802e54185922c3c7f705d0, type: 3}
+  killSound: {fileID: 8300000, guid: e5c26d28105ccbe4783684f456d7b60e, type: 3}
   walkSpeed: 4
   runSpeed: 4
   aggroDurationInSeconds: 4
+  cooldown: 2
   visibleRangeRadius: 14
   aggroRangeRadius: 5
   killRangeRadius: 0.5

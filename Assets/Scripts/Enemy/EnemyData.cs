@@ -14,6 +14,10 @@ namespace Enemy
         public Sprite Sprite;
         */
 
+        [Header("Sounds")] 
+        public AudioClip alertSound;
+        public AudioClip killSound;
+
         [Header("Stats")] 
         public float walkSpeed = 4;
         public float runSpeed = 4;

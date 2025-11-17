@@ -21,6 +21,7 @@ namespace Enemy
         private Coroutine _vignetteFadeCoroutine;
 
         private EnemyMovement _enemyMovement;
+        private AudioSource _audioSource;
         
 
         void Start()
@@ -30,6 +31,7 @@ namespace Enemy
             killCollider.radius = enemyData.killRangeRadius;
             
             _enemyMovement = GetComponent<EnemyMovement>();
+            _audioSource = GetComponent<AudioSource>();
         }
         
         public void OnPlayerEnterAggroRange(CharacterInstance character)
@@ -73,6 +75,8 @@ namespace Enemy
             if (_enemyMovement.cooldownTimer <= 0)
             {
                 character.Die();
+                _audioSource.resource = enemyData.killSound;
+                _audioSource.Play();
                 _enemyMovement.StartCooldown();
             }
         }

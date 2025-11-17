@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public sealed class Tutorial : Game
 {
@@ -22,10 +23,15 @@ public sealed class Tutorial : Game
 	{
 		base.Update();
 
-		if (Input.GetKeyDown(KeyCode.F1))
+		if (Input.GetKeyDown(KeyCode.Return))
 		{
+			/*
 			var nextGame = Resources.Load<GameObject>("Prefabs/GameScreens/Game");
 			StaticGame.Instance.ChangeCurrentGame(nextGame);
+			*/
+			
+			//Debug.Log("LOAD THE NEW SCENE HERE!");
+			SceneManager.LoadScene("Camilo Gym");
 		}
 	}
 
@@ -41,5 +47,6 @@ public sealed class Tutorial : Game
 		base.OnTriangleFormed(v1, v2, v3);
 
 		_titleSplashRenderer.sprite = _yaySprite;
+		_tutorialText.text = "";
 	}
 }

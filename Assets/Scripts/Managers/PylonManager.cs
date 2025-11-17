@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Managers
 {
-    public class PylonManager : Singleton<PylonManager>, IService
+    public class PylonManager : Singleton<PylonManager>//, IService
     {
         protected override bool PersistBetweenScenes => false;
 
@@ -20,11 +20,13 @@ namespace Managers
         public UnityEvent<Vector3, Vector3, Vector3> onTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
         public UnityEvent<GameObject> PylonRegistered = new();
 
+        private AudioSource _audioSource;
+
         protected override void Awake()
         {
             base.Awake();
-            ServiceManager.Instance.RegisteredService(this);
-
+            //ServiceManager.Instance.RegisteredService(this);
+            _audioSource = GetComponent<AudioSource>();
             //DebugTexter.Instance.UpdateText("Find somewhere to place your first pylon!", Color.yellow);
         }
 
@@ -84,7 +86,8 @@ namespace Managers
                 //DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
 
                 onTriangleFormed.Invoke(_activePylons[0].transform.position, _activePylons[1].transform.position, _activePylons[2].transform.position);
-
+                _audioSource.Play();
+                
                 foreach (var pylon in _activePylons)
                 {
                     Destroy(pylon.gameObject);

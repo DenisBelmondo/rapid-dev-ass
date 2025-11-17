@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: e229001e439a28841b5ffc9814a38be3
+  - enabled: 1
+    path: Assets/Scenes/Camilo Gym.unity
+    guid: 8255392d4853ebc48ad627b43dbab794
+  - enabled: 0
     path: Assets/Scenes/MainMenuScene.unity
     guid: 4d349b1f64da8bd4ea0584fa6f34f584
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ExplorationProtoScene.unity
     guid: aa6b5268a966ade409318b4bf458405c
   m_configObjects:

@@ -58,7 +58,7 @@ namespace Player
                 PlayerPathManager.Instance.SetLeader(Leader.transform);
             }
             UpdateFollowTargets();
-            Debug.Log(crewMembers.Count);
+            //Debug.Log(crewMembers.Count);
         }
 
         private void UpdateFollowTargets()

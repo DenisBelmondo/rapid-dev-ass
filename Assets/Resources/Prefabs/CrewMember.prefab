@@ -98,9 +98,9 @@ GameObject:
   - component: {fileID: 1044025757743553569}
   - component: {fileID: 7881083906205292583}
   - component: {fileID: 8362832355372592524}
-  - component: {fileID: 471642705812920156}
   - component: {fileID: 4976621657894279716}
   - component: {fileID: 1042693176230731151}
+  - component: {fileID: 1175125763317052805}
   m_Layer: 3
   m_Name: CrewMember
   m_TagString: Player
@@ -206,8 +206,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &471642705812920156
-BoxCollider2D:
+--- !u!114 &4976621657894279716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076894696088402929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0428c51a47aeb143858aeeaf097dfad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: a515a841d3a06d943bd82a713f97def9, type: 2}
+  food: 100
+  mood: 100
+  minFollowDistance: 1
+  maxFollowDistance: 5
+--- !u!114 &1042693176230731151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076894696088402929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3053194631d904e4dac415f7f8b7799b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!70 &1175125763317052805
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -241,43 +270,5 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &4976621657894279716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8076894696088402929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0428c51a47aeb143858aeeaf097dfad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: a515a841d3a06d943bd82a713f97def9, type: 2}
-  food: 100
-  mood: 100
-  minFollowDistance: 1
-  maxFollowDistance: 5
---- !u!114 &1042693176230731151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8076894696088402929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3053194631d904e4dac415f7f8b7799b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Direction: 0

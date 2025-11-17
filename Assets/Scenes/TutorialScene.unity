@@ -386,6 +386,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7451190216429521380, guid: 13847824bbd217313826fa8bbfc12b11, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 11400000, guid: 70872d08ca27f1347b76b1c78ef73ffc, type: 2}
     - target: {fileID: 8156403929732585755, guid: 13847824bbd217313826fa8bbfc12b11, type: 3}
       propertyPath: m_SortingOrder
       value: 2

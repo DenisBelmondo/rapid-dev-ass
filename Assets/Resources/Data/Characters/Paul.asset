@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Paul
   m_EditorClassIdentifier: 
   characterName: Paul
-  characterSprite: {fileID: 1111932342, guid: 4a29487be4a4b474cb2939e538153c24, type: 3}
+  characterSprite: {fileID: 1879385475, guid: b6b8aa3dc78ac0044a9a3f2a6b5ea067, type: 3}
   corpsePrefab: {fileID: 8123960346245887608, guid: 24d0d6ee16b0a2b448103b327f3ac49c, type: 3}

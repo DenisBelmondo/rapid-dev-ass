@@ -11,13 +11,17 @@ public class ZoomingCamera : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKey(KeyCode.Equals))
+        
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            _camera.orthographicSize = 15;
-        }
-        else if (Input.GetKey(KeyCode.Minus))
-        {
-            _camera.orthographicSize = 30;
+            if (_camera.orthographicSize == 15)
+            {
+                _camera.orthographicSize = 30;
+            }
+            else
+            {
+                _camera.orthographicSize = 15;
+            }
         }
     }
 }

@@ -47,7 +47,11 @@ public class TileMapCollection : MonoBehaviour
 
                 FogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
-                _scorer.IncrementTiles();
+                if (_scorer != null)
+                {
+                    _scorer.IncrementTiles();
+                }
+                
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }

@@ -29,6 +29,17 @@ public class Game : MonoBehaviour
         {
             _lines.SetPosition(_lines.positionCount - 1, _crewManager.Leader.transform.position);
         }
+
+        if (_pylonStack.Count == 3)
+        {
+            _lines.startColor = Color.yellow;
+            _lines.endColor = Color.yellow;
+        }
+        else
+        {
+            _lines.startColor = Color.white;
+            _lines.endColor = Color.white;
+        }
     }
 
     public virtual void OnPylonRegistered(GameObject pylon)
@@ -40,6 +51,8 @@ public class Game : MonoBehaviour
         {
             _lines.SetPosition(i, _pylonStack[i].transform.position);
         }
+        
+        
     }
 
     public virtual void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)

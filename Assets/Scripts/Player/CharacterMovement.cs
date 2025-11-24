@@ -22,6 +22,10 @@ namespace Player
         
         //Obstacle speed effects
         private float _speedMultiplier = 1.0f;
+
+        private bool amIInWater = false;
+        
+        
         
         private void Awake()
         {
@@ -46,28 +50,28 @@ namespace Player
             _moveDirection = direction;
         }
         
-        private bool IsOnWater()
+        private void UpdateSpeedMultiplier()
         {
             Vector3Int cellPosition = CrewManager.Instance.waterTilemap.WorldToCell(transform.position);
 
-            if (CrewManager.Instance.waterTilemap.HasTile(cellPosition))
+            if (!amIInWater && CrewManager.Instance.waterTilemap.HasTile(cellPosition))
             {
-                return true;
+                amIInWater = true;
+                CrewManager.Instance.GetComponent<AudioSource>().Play();
             }
-            else
+
+            if (!CrewManager.Instance.waterTilemap.HasTile(cellPosition))
             {
-                return false;
+                amIInWater = false;
             }
             
-            
+            _speedMultiplier = amIInWater ? CrewManager.Instance.waterSpeedMult : 1.0f;
+            _animator.SetBool("InWater", amIInWater);
         }
 
         private void FixedUpdate()
         {
-            
-            _speedMultiplier = IsOnWater()? CrewManager.Instance.waterSpeedMult : 1.0f;
-            
-            _animator.SetBool("InWater", IsOnWater());
+            UpdateSpeedMultiplier();
             
             if (_isLeader)
             {

@@ -13,7 +13,7 @@ namespace Enemy
         //this script has two triggers. "Visible" and "Aggro"
         [Header("Triggers")] 
         [SerializeField] private CircleCollider2D visibleCollider;
-        [SerializeField] private CircleCollider2D aggroCollider;
+        [SerializeField] public CircleCollider2D aggroCollider;
         [SerializeField] private CircleCollider2D killCollider;
     
         [Header("Vignette")]
@@ -36,6 +36,12 @@ namespace Enemy
         
         public void OnPlayerEnterAggroRange(CharacterInstance character)
         {
+            // If this is an alligator, let the AlligatorAI handle targeting logic.
+            if (GetComponent<AlligatorAI>() != null)
+            {
+                return;
+            }
+            
             //Debug.Log($"{character.name} entered aggro range!");
             if (_enemyMovement.cooldownTimer <= 0)
             {
@@ -70,12 +76,19 @@ namespace Enemy
         
         public void OnPlayerEnterKillRange(CharacterInstance character)
         {
+            Debug.Log($"OnPlayerEnterKillRange triggered by: {character.name}", this);
             if (_enemyMovement.cooldownTimer <= 0)
             {
+                Debug.Log($"Cooldown check passed. Attempting to kill {character.name}.", this);
                 character.Die();
+                Debug.Log($"character.Die() called. Playing sound and starting cooldown.", this);
                 _audioSource.resource = enemyData.killSound;
                 _audioSource.Play();
                 _enemyMovement.StartCooldown();
+            }
+            else
+            {
+                Debug.Log($"Kill attempt failed: Cooldown timer is {_enemyMovement.cooldownTimer}", this);
             }
         }
 

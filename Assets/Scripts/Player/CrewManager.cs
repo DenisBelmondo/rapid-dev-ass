@@ -23,6 +23,7 @@ namespace Player
         [SerializeField] private float maxGroupSpeed = 5f;
         
         [SerializeField] public float waterSpeedMult = 0.5f;
+        public bool isAMemberInWater = false;
 
         [Header("Special Tilemaps")] 
         [SerializeField] public Tilemap waterTilemap;
@@ -58,6 +59,21 @@ namespace Player
                 float speedRatio = Leader.food / 100f;
                 GroupSpeed = Mathf.Lerp(minGroupSpeed, maxGroupSpeed, speedRatio);
             }
+
+            //is anyone in water?
+            bool foundMemberInWater = false;
+            foreach (var member in crewMembers)
+            {
+                if (member == null) continue;
+                
+                Vector3Int cellPosition = waterTilemap.WorldToCell(member.transform.position);
+                if (waterTilemap.HasTile(cellPosition))
+                {
+                    foundMemberInWater = true;
+                    break; //found one!
+                }
+            }
+            isAMemberInWater = foundMemberInWater;
         }
         private void UpdateCrewOrder()
         {

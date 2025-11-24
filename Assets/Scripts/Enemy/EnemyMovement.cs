@@ -9,29 +9,29 @@ namespace Enemy
     public class EnemyMovement : MonoBehaviour
     {
         //has stamina, has sprint speed, has walk speed
-        private Rigidbody2D _rb;
-        private EnemyInstance _enemyInstance;
+        protected Rigidbody2D _rb;
+        protected EnemyInstance _enemyInstance;
         
         private Vector3 _startPosition;
         private float _aggroDurationInSeconds;
-        private float _aggroTimer;
-        private CharacterInstance _target;
+        protected float _aggroTimer;
+        protected CharacterInstance _target;
         public float cooldownTimer;
         
-        private Animator _animator;
-        private SpriteRenderer _spriteRenderer;
+        protected Animator _animator;
+        protected SpriteRenderer _spriteRenderer;
         
         private AudioSource _audioSource;
 
-        private enum State
+        public enum State
         {
             Idle,
             Chasing,
             Cooldown
         }
-        
-        private State CurrentState { get; set; }
-        private void Awake()
+
+        public State CurrentState;
+        public virtual void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
             _enemyInstance = GetComponent<EnemyInstance>();
@@ -65,12 +65,16 @@ namespace Enemy
 
         public void StartChasing(CharacterInstance target)
         {
+            Debug.Log($"StartChasing called. Target: {target.name}", this);
             _target = target;
 
             if (CurrentState != State.Chasing)
             {
-                _audioSource.resource = _enemyInstance.enemyData.alertSound;
-                _audioSource.Play();
+                if(!_audioSource.isPlaying)
+                {
+                    _audioSource.resource = _enemyInstance.enemyData.alertSound;
+                    _audioSource.Play();
+                }
             }
             CurrentState = State.Chasing;
             _aggroTimer = _enemyInstance.enemyData.aggroDurationInSeconds;
@@ -83,7 +87,7 @@ namespace Enemy
             _rb.linearVelocity = Vector3.zero;
         }
 
-        void HandleChasing()
+        public virtual void HandleChasing()
         {
             if (_target != null)
             {
@@ -110,6 +114,7 @@ namespace Enemy
 
         public void StartCooldown()
         {
+            Debug.Log("StartCooldown called.", this);
             CurrentState = State.Cooldown;
             cooldownTimer = _enemyInstance.enemyData.cooldown;
             _target = null;

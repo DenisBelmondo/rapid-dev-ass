@@ -49,7 +49,7 @@ public class TileMapCollection : MonoBehaviour
                 _drawnTiles.Add(tilePos);
                 if (_scorer != null)
                 {
-                    _scorer.IncrementTiles();
+                    _scorer.CheckAndRegisterRevealedTile(tilePos);
                 }
                 
             },

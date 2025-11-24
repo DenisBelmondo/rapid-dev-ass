@@ -114,7 +114,7 @@ namespace Enemy
 
         public void StartCooldown()
         {
-            Debug.Log("StartCooldown called.", this);
+            //Debug.Log("StartCooldown called.", this);
             CurrentState = State.Cooldown;
             cooldownTimer = _enemyInstance.enemyData.cooldown;
             _target = null;

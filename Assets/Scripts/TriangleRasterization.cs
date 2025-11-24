@@ -48,7 +48,11 @@ public static class TriangleRasterization
         float s = 1 / (2 * area) * (v0.Y * v2.X - v0.X * v2.Y + (v2.Y - v0.Y) * p.X + (v0.X - v2.X) * p.Y);
         float t = 1 / (2 * area) * (v0.X * v1.Y - v0.Y * v1.X + (v0.Y - v1.Y) * p.X + (v1.X - v0.X) * p.Y);
 
-        return s >= 0 && t >= 0 && (s + t) <= 1;
+
+        float epsilon = 0.1f;
+
+        //return s >= 0 && t >= 0 && (s + t) <= 1;
+        return s >= -epsilon && t >= -epsilon && (s + t) <= 1 + epsilon;
     }
 
     private static float TriangleArea(Vector2 v0, Vector2 v1, Vector2 v2)

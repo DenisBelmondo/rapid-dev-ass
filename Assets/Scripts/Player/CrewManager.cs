@@ -4,6 +4,7 @@ using Core;
 using Managers;
 using UI;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Player
 {
@@ -20,6 +21,11 @@ namespace Player
         [Header("Group Speed Settings")] 
         [SerializeField] private float minGroupSpeed = 0.8f;
         [SerializeField] private float maxGroupSpeed = 5f;
+        
+        [SerializeField] public float waterSpeedMult = 0.5f;
+
+        [Header("Special Tilemaps")] 
+        [SerializeField] public Tilemap waterTilemap;
 
         private void OnEnable()
         {
@@ -30,7 +36,16 @@ namespace Player
         {
             CharacterInstance.OnStatsChanged -= UpdateCrewOrder;
         }
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (waterTilemap == null)
+            {
+                Debug.LogError("No waterTilemap assigned in inspector!");
+            }
+        }
+
         private void Start()
         {
             UpdateCrewOrder();

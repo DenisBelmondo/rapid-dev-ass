@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 4976621657894279716}
   - component: {fileID: 1042693176230731151}
   - component: {fileID: 1175125763317052805}
+  - component: {fileID: 9205630085774914263}
   m_Layer: 3
   m_Name: CrewMember
   m_TagString: Player
@@ -167,8 +168,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 5486048065138766706, guid: b6b8aa3dc78ac0044a9a3f2a6b5ea067, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -235,6 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3053194631d904e4dac415f7f8b7799b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 9205630085774914263}
 --- !u!70 &1175125763317052805
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -269,6 +271,28 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.5}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
+--- !u!95 &9205630085774914263
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076894696088402929}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4d8b5c13cdbdf4541bad78217e0ba579, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

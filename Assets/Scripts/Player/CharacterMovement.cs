@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Player
@@ -8,6 +9,8 @@ namespace Player
         private Rigidbody2D _rb;
         private CharacterInstance _characterInstance;
         private Vector2 _moveDirection;
+        private Animator _animator;
+        private SpriteRenderer _spriteRenderer;
 
 		//leashing
 		private Vector3 _leashTargetWorldPosition;
@@ -16,20 +19,9 @@ namespace Player
         private CharacterMovement _characterToFollow;
         private bool _isLeader = false;
         private float _movementStoppingDistance = 0.05f;
-
-        private struct LeashPosition
-        {
-            public readonly int Index;
-            public readonly float SegmentAlpha;
-            public readonly Vector3 WorldPosition;
-
-            public LeashPosition(int index, float segmentAlpha, Vector3 worldPosition)
-            {
-                Index = index;
-                SegmentAlpha = segmentAlpha;
-                WorldPosition = worldPosition;
-            }
-        }
+        
+        //Obstacle speed effects
+        private float _speedMultiplier = 1.0f;
         
         private void Awake()
         {
@@ -37,6 +29,9 @@ namespace Player
             _characterInstance = GetComponent<CharacterInstance>();
             _rb.gravityScale = 0;
             _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
+            _animator = GetComponent<Animator>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         public void SetFollowTarget(CharacterInstance target)
@@ -50,12 +45,33 @@ namespace Player
         {
             _moveDirection = direction;
         }
+        
+        private bool IsOnWater()
+        {
+            Vector3Int cellPosition = CrewManager.Instance.waterTilemap.WorldToCell(transform.position);
+
+            if (CrewManager.Instance.waterTilemap.HasTile(cellPosition))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+            
+        }
 
         private void FixedUpdate()
         {
+            
+            _speedMultiplier = IsOnWater()? CrewManager.Instance.waterSpeedMult : 1.0f;
+            
+            _animator.SetBool("InWater", IsOnWater());
+            
             if (_isLeader)
             {
-                _rb.linearVelocity = _moveDirection * CrewManager.Instance.GroupSpeed;
+                _rb.linearVelocity = _moveDirection * (CrewManager.Instance.GroupSpeed * _speedMultiplier);
 
                 var path = PlayerPathManager.Instance.pathHistory;
                 if (path.Count >= 2)
@@ -80,7 +96,7 @@ namespace Player
 
                 if (distanceToTarget > _movementStoppingDistance)
                 {
-                    float speed = CrewManager.Instance.GroupSpeed;
+                    float speed = CrewManager.Instance.GroupSpeed * _speedMultiplier;
                     Vector3 direction = (targetPos - currentPos).normalized;
                     
                     //check for overshoot
@@ -99,6 +115,10 @@ namespace Player
                     _rb.linearVelocity = Vector3.zero;
                 }
             }
+            
+            _animator.SetFloat("Speed", _rb.linearVelocity.magnitude);
+
+            _spriteRenderer.flipX = _rb.linearVelocity.x < 0;
         }
 
         void UpdateLeashPosition()
@@ -171,4 +191,19 @@ namespace Player
             return new LeashPosition(0, 0, path[0]);
         }
     }
+    
+    public struct LeashPosition
+    {
+        public readonly int Index;
+        public readonly float SegmentAlpha;
+        public readonly Vector3 WorldPosition;
+
+        public LeashPosition(int index, float segmentAlpha, Vector3 worldPosition)
+        {
+            Index = index;
+            SegmentAlpha = segmentAlpha;
+            WorldPosition = worldPosition;
+        }
+    }
+
 }

@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: NewGrass
+  m_Name: AnimatedWater
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: -3976150197917207313, guid: 4e1a8970fa448f95b89939bbccce80a4, type: 3}
-  - {fileID: 1673650901286855629, guid: 4e1a8970fa448f95b89939bbccce80a4, type: 3}
-  - {fileID: 3689969259183767785, guid: 4e1a8970fa448f95b89939bbccce80a4, type: 3}
+  - {fileID: -5347658340221619323, guid: 49b90f8f192a123b48bded84567d69fa, type: 3}
+  - {fileID: 1366186731143928701, guid: 23965f179082b198082e350c306992f0, type: 3}
   m_MinSpeed: 1
   m_MaxSpeed: 1
   m_AnimationStartTime: 0

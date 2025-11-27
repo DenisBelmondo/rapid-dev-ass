@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 5307371040055476846}
   - component: {fileID: 837533225061382077}
   m_Layer: 0
-  m_Name: Background
+  m_Name: OldTiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

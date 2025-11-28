@@ -1,25 +1,21 @@
-using System;
 using Player;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Enemy
 {
     public class EnemyMovement : MonoBehaviour
     {
-        //has stamina, has sprint speed, has walk speed
-        protected Rigidbody2D _rb;
-        protected EnemyInstance _enemyInstance;
+        protected Rigidbody2D Rb;
+        protected EnemyInstance EnemyInstance;
         
         private Vector3 _startPosition;
         private float _aggroDurationInSeconds;
-        protected float _aggroTimer;
-        protected CharacterInstance _target;
+        protected float AggroTimer;
+        protected CharacterInstance Target;
         public float cooldownTimer;
         
-        protected Animator _animator;
-        protected SpriteRenderer _spriteRenderer;
+        protected Animator Animator;
+        protected SpriteRenderer SpriteRenderer;
         
         private AudioSource _audioSource;
 
@@ -30,26 +26,26 @@ namespace Enemy
             Cooldown
         }
 
-        public State CurrentState;
+        public State currentState;
         public virtual void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
-            _enemyInstance = GetComponent<EnemyInstance>();
+            Rb = GetComponent<Rigidbody2D>();
+            EnemyInstance = GetComponent<EnemyInstance>();
             
-            _animator = GetComponent<Animator>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            Animator = GetComponent<Animator>();
+            SpriteRenderer = GetComponent<SpriteRenderer>();
             _audioSource = GetComponent<AudioSource>();
         }
 
         private void Start()
         {
-            CurrentState = State.Idle;
+            currentState = State.Idle;
             _startPosition = transform.position;
         }
 
         private void Update()
         {
-            switch (CurrentState)
+            switch (currentState)
             {
                 case State.Idle:
                     HandleIdle();
@@ -66,60 +62,60 @@ namespace Enemy
         public void StartChasing(CharacterInstance target)
         {
             Debug.Log($"StartChasing called. Target: {target.name}", this);
-            _target = target;
+            Target = target;
 
-            if (CurrentState != State.Chasing)
+            if (currentState != State.Chasing)
             {
                 if(!_audioSource.isPlaying)
                 {
-                    _audioSource.resource = _enemyInstance.enemyData.alertSound;
+                    _audioSource.resource = EnemyInstance.enemyData.alertSound;
                     _audioSource.Play();
                 }
             }
-            CurrentState = State.Chasing;
-            _aggroTimer = _enemyInstance.enemyData.aggroDurationInSeconds;
-            _animator.SetTrigger("Aggro");
+            currentState = State.Chasing;
+            AggroTimer = EnemyInstance.enemyData.aggroDurationInSeconds;
+            Animator.SetTrigger("Aggro");
         }
         
         void HandleIdle()
         {
             //enemy is sleeping, will stay here until EnemyInstance sets off aggro.
-            _rb.linearVelocity = Vector3.zero;
+            Rb.linearVelocity = Vector3.zero;
         }
 
         public virtual void HandleChasing()
         {
-            if (_target != null)
+            if (Target != null)
             {
-                if (transform.position.x > _target.transform.position.x)
+                if (transform.position.x > Target.transform.position.x)
                 {
-                    _spriteRenderer.flipX = true;
+                    SpriteRenderer.flipX = true;
                 }
                 else
                 {
-                    _spriteRenderer.flipX = false;
+                    SpriteRenderer.flipX = false;
                 }
             }
             
-            _aggroTimer -= Time.deltaTime;
+            AggroTimer -= Time.deltaTime;
 
-            if (_target == null || _aggroTimer <= 0)
+            if (Target == null || AggroTimer <= 0)
             {
                 StartCooldown();
                 return;
             }
             
-            _rb.linearVelocity = (_target.transform.position - transform.position).normalized * _enemyInstance.enemyData.runSpeed;
+            Rb.linearVelocity = (Target.transform.position - transform.position).normalized * EnemyInstance.enemyData.runSpeed;
         }
 
         public void StartCooldown()
         {
             //Debug.Log("StartCooldown called.", this);
-            CurrentState = State.Cooldown;
-            cooldownTimer = _enemyInstance.enemyData.cooldown;
-            _target = null;
-            _rb.linearVelocity = Vector3.zero;
-            _animator.SetTrigger("Cooldown");
+            currentState = State.Cooldown;
+            cooldownTimer = EnemyInstance.enemyData.cooldown;
+            Target = null;
+            Rb.linearVelocity = Vector3.zero;
+            Animator.SetTrigger("Cooldown");
         }
         void HandleCooldown()
         {
@@ -127,7 +123,7 @@ namespace Enemy
 
             if (cooldownTimer <= 0)
             {
-                CurrentState = State.Idle;
+                currentState = State.Idle;
             }
         }
         

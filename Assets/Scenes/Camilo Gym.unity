@@ -211,8 +211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369683dbedefd7043ae74021d2d262b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FogController: {fileID: 284479512}
-  PylonSystem: {fileID: 1137169849}
+  fogController: {fileID: 284479512}
+  pylonManager: {fileID: 1137169849}
+  waterTilemap: {fileID: 323746162}
+  targetTilemap: {fileID: 826105793}
+  crewManager: {fileID: 2021148103}
 --- !u!4 &284479511
 Transform:
   m_ObjectHideFlags: 0

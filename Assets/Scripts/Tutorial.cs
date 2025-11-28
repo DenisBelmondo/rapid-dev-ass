@@ -18,8 +18,8 @@ public class Tutorial : MonoBehaviour
 		if(tutorialText == null) Debug.LogError("TUTORIAL: Missing tutorial text");
 		if(successSprite == null) Debug.LogError("TUTORIAL: Missing success sprite");
 		
-		pylonSystem.OnPylonRegistered.AddListener(OnPylonRegistered);
-		pylonSystem.OnTriangleFormed.AddListener(OnTriangleFormed);
+		pylonSystem.onPylonRegistered.AddListener(OnPylonRegistered);
+		pylonSystem.onTriangleFormed.AddListener(OnTriangleFormed);
 	}
 
 	public void Update()

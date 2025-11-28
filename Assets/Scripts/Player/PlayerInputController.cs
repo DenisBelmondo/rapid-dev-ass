@@ -1,3 +1,4 @@
+using Level;
 using Managers;
 using UnityEngine;
 
@@ -6,13 +7,13 @@ namespace Player
     public class PlayerInputController : MonoBehaviour
     {
         private InputSystem_Actions _playerInput;
-        private CrewManager _crewManager;
+        private World _world;
 
         void Awake()
         {
             _playerInput = new InputSystem_Actions();
             _playerInput.Player.PlacePylon.performed += context => PlacePylon();
-            _crewManager = CrewManager.Instance;
+            _world = World.Instance;
         }
 
         void OnEnable()
@@ -27,22 +28,16 @@ namespace Player
 
         void Update()
         {
-            if (_crewManager == null || _crewManager.Leader == null)
-            {
-                Debug.Log("Crew Manager is either null or empty!!");
-                return;
-            }
-            
             Vector2 moveInput = _playerInput.Player.Move.ReadValue<Vector2>();
-            if (_crewManager.LeaderMovement != null)
+            if (_world.crewManager.LeaderMovement != null)
             {
-                _crewManager.LeaderMovement.Move(moveInput);
+                _world.crewManager.LeaderMovement.Move(moveInput);
             }
         }
 
         void PlacePylon()
         {
-            PylonManager.Instance.RegisterPylon(CrewManager.Instance.Leader.transform);
+            _world.pylonManager.RegisterPylon(_world.crewManager.Leader.transform);
         }
     }
 }

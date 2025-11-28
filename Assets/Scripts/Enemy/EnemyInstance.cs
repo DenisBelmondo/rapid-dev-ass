@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Level;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,13 +23,15 @@ namespace Enemy
 
         private EnemyMovement _enemyMovement;
         private AudioSource _audioSource;
-        
+        private CrewManager _crewManager;
 
         void Start()
         {
             visibleCollider.radius = enemyData.visibleRangeRadius;
             aggroCollider.radius = enemyData.aggroRangeRadius;
             killCollider.radius = enemyData.killRangeRadius;
+
+            _crewManager = World.Instance.crewManager;
             
             _enemyMovement = GetComponent<EnemyMovement>();
             _audioSource = GetComponent<AudioSource>();
@@ -42,10 +45,9 @@ namespace Enemy
                 return;
             }
             
-            //Debug.Log($"{character.name} entered aggro range!");
             if (_enemyMovement.cooldownTimer <= 0)
             {
-                _enemyMovement.StartChasing(CrewManager.Instance.GetLastMember());
+                _enemyMovement.StartChasing(_crewManager.GetLastMember());
             }
             
         }
@@ -69,8 +71,6 @@ namespace Enemy
             if (_charactersInVisibleRange.Count == 0)
             {
                 UpdateVignetteState();
-                //vignette.GetComponent<Animator>().SetTrigger("StartFadeOut");
-                //Debug.Log("FADEOUT!!!");
             }
         }
         

@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using Core;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Managers
 {
-    public class PylonManager : Singleton<PylonManager>
+    public class PylonManager : MonoBehaviour 
     {
-        protected override bool PersistBetweenScenes => false;
-
         public List<GameObject> activePylons = new List<GameObject>();
         private readonly HashSet<Vector3> _pylonPositions = new HashSet<Vector3>();
 
@@ -16,15 +13,14 @@ namespace Managers
 
         public GameObject pylonPrefab;
 
-        public UnityEvent<Vector3, Vector3, Vector3> OnTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
-        public UnityEvent<GameObject> OnPylonRegistered = new();
-        public UnityEvent OnPylonsCleared = new UnityEvent();
+        public UnityEvent<Vector3, Vector3, Vector3> onTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
+        public UnityEvent<GameObject> onPylonRegistered = new();
+        public UnityEvent onPylonsCleared = new UnityEvent();
 
         private AudioSource _audioSource;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             _audioSource = GetComponent<AudioSource>();
         }
 
@@ -65,7 +61,7 @@ namespace Managers
                 //DebugTexter.Instance.UpdateText("Go back to the first pylon you placed to clear the triangle!", Color.yellow);
             }
 
-            OnPylonRegistered.Invoke(newPylon);
+            onPylonRegistered.Invoke(newPylon);
         }
 
         public void OnPylonInteracted(GameObject interactedPylon)
@@ -81,7 +77,7 @@ namespace Managers
                 Debug.Log("Triangle formed!");
                 //DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
 
-                OnTriangleFormed.Invoke(activePylons[0].transform.position, activePylons[1].transform.position, activePylons[2].transform.position);
+                onTriangleFormed.Invoke(activePylons[0].transform.position, activePylons[1].transform.position, activePylons[2].transform.position);
                 _audioSource.Play();
                 
                 foreach (var pylon in activePylons)
@@ -106,7 +102,7 @@ namespace Managers
             activePylons.Clear();
             _pylonPositions.Clear();
             
-            OnPylonsCleared.Invoke();
+            onPylonsCleared.Invoke();
         }
 
         private Vector3 GetSnappedPosition(Vector3 rawPos)

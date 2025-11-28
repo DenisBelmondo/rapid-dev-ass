@@ -1,4 +1,4 @@
-using System;
+using Level;
 using Managers;
 using Player;
 using UnityEngine;
@@ -15,14 +15,12 @@ namespace UI.Feedback
         {
             _lines = GetComponent<LineRenderer>();
             if(_lines == null) Debug.LogError("No line renderer found in PylonLineVisualizer");
-            _crewManager = CrewManager.Instance;
-            if(_crewManager == null) Debug.LogError("No crewManager found!");
-            _pylonManager = PylonManager.Instance;
-            if(_pylonManager == null) Debug.LogError("No PylonManager found!");
+            _crewManager = World.Instance.crewManager;
+            _pylonManager = World.Instance.pylonManager;
             
-            PylonManager.Instance.OnPylonRegistered.AddListener(OnPylonRegistered);
-            PylonManager.Instance.OnPylonsCleared.AddListener(OnPylonsCleared);
-            PylonManager.Instance.OnTriangleFormed.AddListener(OnTriangleFormed);
+            _pylonManager.onPylonRegistered.AddListener(OnPylonRegistered);
+            _pylonManager.onPylonsCleared.AddListener(OnPylonsCleared);
+            _pylonManager.onTriangleFormed.AddListener(OnTriangleFormed);
         }
 
         private void Update()
@@ -46,11 +44,11 @@ namespace UI.Feedback
 
         private void OnPylonRegistered(GameObject pylon)
         {
-            _lines.positionCount = PylonManager.Instance.activePylons.Count + 1;
+            _lines.positionCount = _pylonManager.activePylons.Count + 1;
 
-            for (int i = 0; i < PylonManager.Instance.activePylons.Count; i++)
+            for (int i = 0; i < _pylonManager.activePylons.Count; i++)
             {
-                _lines.SetPosition(i, PylonManager.Instance.activePylons[i].transform.position);
+                _lines.SetPosition(i, _pylonManager.activePylons[i].transform.position);
             }
         }
 

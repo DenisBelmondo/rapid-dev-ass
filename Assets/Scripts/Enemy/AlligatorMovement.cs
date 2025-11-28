@@ -1,3 +1,4 @@
+using Level;
 using Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -11,42 +12,42 @@ namespace Enemy
         public override void Awake()
         {
             base.Awake();
-            _waterTilemap = CrewManager.Instance.waterTilemap;
+            _waterTilemap = World.Instance.waterTilemap;
         }
 
         public override void HandleChasing()
         {
-            _aggroTimer -= Time.deltaTime;
-            if (_target == null || _aggroTimer <= 0)
+            AggroTimer -= Time.deltaTime;
+            if (Target == null || AggroTimer <= 0)
             {
                 StartCooldown();
                 return;
             }
             
-            if (!IsPositionOnWater(_target.transform.position))
+            if (!IsPositionOnWater(Target.transform.position))
             {
-                Debug.Log($"Target {_target.name} left the water. Returning to Idle to find a new target.", this);
-                CurrentState = State.Idle;
-                _rb.linearVelocity = Vector3.zero;
-                _animator.SetTrigger("Cooldown");
+                Debug.Log($"Target {Target.name} left the water. Returning to Idle to find a new target.", this);
+                currentState = State.Idle;
+                Rb.linearVelocity = Vector3.zero;
+                Animator.SetTrigger("Cooldown");
                 return;
             }
             
-            if (transform.position.x > _target.transform.position.x)
-                _spriteRenderer.flipX = true;
+            if (transform.position.x > Target.transform.position.x)
+                SpriteRenderer.flipX = true;
             else
-                _spriteRenderer.flipX = false;
+                SpriteRenderer.flipX = false;
             
-            var desiredVelocity = (_target.transform.position - transform.position).normalized * _enemyInstance.enemyData.runSpeed;
+            var desiredVelocity = (Target.transform.position - transform.position).normalized * EnemyInstance.enemyData.runSpeed;
             Vector3 nextPos = transform.position + desiredVelocity * Time.deltaTime;
 
             if (IsPositionOnWater(transform.position) && IsPositionOnWater(nextPos))
             {
-                _rb.linearVelocity = desiredVelocity;
+                Rb.linearVelocity = desiredVelocity;
             }
             else
             {
-                _rb.linearVelocity = Vector3.zero;
+                Rb.linearVelocity = Vector3.zero;
             }
         }
 

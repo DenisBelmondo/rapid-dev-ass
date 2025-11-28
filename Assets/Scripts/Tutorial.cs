@@ -30,12 +30,12 @@ public class Tutorial : MonoBehaviour
 		}
 	}
 
-	public void OnPylonRegistered(GameObject pylon)
+	private void OnPylonRegistered(GameObject pylon)
 	{
 		_tutorialCounter += 1;
 	}
 
-	public void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
+	private void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
 	{
 		titleSplashRenderer.sprite = successSprite;
 		tutorialText.text = "";

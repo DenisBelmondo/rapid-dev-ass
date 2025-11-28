@@ -1,52 +1,43 @@
+using Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public sealed class Tutorial : Game
+public class Tutorial : MonoBehaviour
 {
 	private int _tutorialCounter;
-	private TMP_Text _tutorialText;
-	private SpriteRenderer _titleSplashRenderer;
+	[SerializeField]private TMP_Text tutorialText;
+	[SerializeField]private SpriteRenderer titleSplashRenderer;
+	[SerializeField] private Sprite successSprite;
+	[SerializeField] private PylonManager pylonSystem;
 
-	[SerializeField]
-	private Sprite _yaySprite;
-
-	public override void Start()
+	public void Start()
 	{
-		base.Start();
-
-		_titleSplashRenderer = transform.Find("TitleSplash").GetComponent<SpriteRenderer>();
-		_tutorialText = transform.Find("Canvas/TutorialText").GetComponent<TMP_Text>();
+		if(pylonSystem == null) Debug.LogError("TUTORIAL: Missing pylon system");
+		if(titleSplashRenderer == null) Debug.LogError("TUTORIAL: Missing title splash renderer");
+		if(tutorialText == null) Debug.LogError("TUTORIAL: Missing tutorial text");
+		if(successSprite == null) Debug.LogError("TUTORIAL: Missing success sprite");
+		
+		pylonSystem.OnPylonRegistered.AddListener(OnPylonRegistered);
+		pylonSystem.OnTriangleFormed.AddListener(OnTriangleFormed);
 	}
 
-	public override void Update()
+	public void Update()
 	{
-		base.Update();
-
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			/*
-			var nextGame = Resources.Load<GameObject>("Prefabs/GameScreens/Game");
-			StaticGame.Instance.ChangeCurrentGame(nextGame);
-			*/
-			
-			//Debug.Log("LOAD THE NEW SCENE HERE!");
 			SceneManager.LoadScene("Camilo Gym");
 		}
 	}
 
-	public override void OnPylonRegistered(GameObject pylon)
+	public void OnPylonRegistered(GameObject pylon)
 	{
-		base.OnPylonRegistered(pylon);
-
 		_tutorialCounter += 1;
 	}
 
-	public override void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
+	public void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
 	{
-		base.OnTriangleFormed(v1, v2, v3);
-
-		_titleSplashRenderer.sprite = _yaySprite;
-		_tutorialText.text = "";
+		titleSplashRenderer.sprite = successSprite;
+		tutorialText.text = "";
 	}
 }

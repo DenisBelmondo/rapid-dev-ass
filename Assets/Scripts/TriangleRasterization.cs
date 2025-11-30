@@ -1,5 +1,6 @@
 using System.Numerics;
 using System;
+using System.Collections;
 
 public static class TriangleRasterization
 {
@@ -39,6 +40,31 @@ public static class TriangleRasterization
                 }
             }
         }
+    }
+
+    public static IEnumerator RasterizeTriangleAsync<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
+    {
+        // Get the minimum and maximum bounding box
+        int minX = (int)Math.Min(Math.Min(v0.X, v1.X), v2.X);
+        int maxX = (int)Math.Max(Math.Max(v0.X, v1.X), v2.X);
+        int minY = (int)Math.Min(Math.Min(v0.Y, v1.Y), v2.Y);
+        int maxY = (int)Math.Max(Math.Max(v0.Y, v1.Y), v2.Y);
+
+        // Iterate through the bounding box
+        for (int y = minY; y <= maxY; y++)
+        {
+            for (int x = minX; x <= maxX; x++)
+            {
+                // Calculate barycentric coordinates
+                if (IsPointInTriangle(new(x, y), v0, v1, v2))
+                {
+                    bufferInterface.Set?.Invoke(x, y, value);
+                    yield return new UnityEngine.WaitForSeconds(1 / 200F);
+                }
+            }
+        }
+
+        yield return null;
     }
 
     private static bool IsPointInTriangle(Vector2 p, Vector2 v0, Vector2 v1, Vector2 v2)

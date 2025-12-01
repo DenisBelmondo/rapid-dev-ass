@@ -32,7 +32,7 @@ public class FogController : MonoBehaviour
                 fogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
                 
-                OnTileRevealed.Invoke();
+                OnTileRevealed?.Invoke();
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }

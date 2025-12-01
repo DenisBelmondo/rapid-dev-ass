@@ -51,16 +51,7 @@ namespace Managers
             activePylons.Add(newPylon);
             _pylonPositions.Add(snappedPos);
             Debug.Log($"Pylon {activePylons.Count} placed at {snappedPos}.");
-
-            if (activePylons.Count < maxPylons)
-            {
-                //DebugTexter.Instance.UpdateText($"Pylon Placed! {maxPylons - _activePylons.Count} Pylons left!", Color.yellow);
-            }
-            else
-            {
-                //DebugTexter.Instance.UpdateText("Go back to the first pylon you placed to clear the triangle!", Color.yellow);
-            }
-
+            
             onPylonRegistered.Invoke(newPylon);
         }
 
@@ -80,12 +71,7 @@ namespace Managers
                 onTriangleFormed.Invoke(activePylons[0].transform.position, activePylons[1].transform.position, activePylons[2].transform.position);
                 _audioSource.Play();
                 
-                foreach (var pylon in activePylons)
-                {
-                    Destroy(pylon.gameObject);
-                }
-                activePylons.Clear();
-                _pylonPositions.Clear();
+                ClearPylons();
             }
             else
             {

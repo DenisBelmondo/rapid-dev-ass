@@ -14,6 +14,7 @@ namespace UI
         [SerializeField] private TMP_Text _introText;
         [SerializeField] private TMP_Text _gameOverText;
         [SerializeField] private TMP_Text _winText;
+        [SerializeField] private TMP_Text _pylonText;
         
         [Header("Score")]
         [SerializeField] private int _targetScorePercent = 80;
@@ -24,6 +25,8 @@ namespace UI
 
         private int _targetPercent = 0;
         private Tilemap _targetTilemap;
+
+        private int _pylonCount;
 
         private void Awake()
         {
@@ -43,6 +46,8 @@ namespace UI
             
             
             World.Instance.fogController.OnTileRevealed += UpdatePercent;
+            World.Instance.pylonManager.onPylonRegistered.AddListener(UpdatePylons);
+            World.Instance.pylonManager.onPylonsCleared.AddListener(ClearPylons);
         }
         
         private void PlayIntroText()
@@ -64,9 +69,20 @@ namespace UI
             _targetPercent = (int)(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100);
         }
 
+        private void UpdatePylons(GameObject pylon)
+        {
+            _pylonCount++;
+        }
+
+        private void ClearPylons()
+        {
+            _pylonCount = 0;
+        }
+
         void Update()
         {
             _percentText.text = _targetPercent + "%";
+            _pylonText.text = $"{_pylonCount}/3";
         }
 
         public void PlayGameOverText()

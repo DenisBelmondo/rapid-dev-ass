@@ -18,6 +18,11 @@ namespace UI
         
         [Header("Score")]
         [SerializeField] private int _targetScorePercent = 80;
+        
+        [Header("Sound")]
+        [SerializeField] private AudioClip _winSound;
+        [SerializeField] private AudioClip _loseSound;
+        private AudioSource _audioSource;
 
         private Coroutine _fadeCoroutine;
         private int _totalTilesInArea;
@@ -27,6 +32,7 @@ namespace UI
         private Tilemap _targetTilemap;
 
         private int _pylonCount;
+        private bool _isWon = false;
 
         private void Awake()
         {
@@ -48,6 +54,10 @@ namespace UI
             World.Instance.fogController.OnTileRevealed += UpdatePercent;
             World.Instance.pylonManager.onPylonRegistered.AddListener(UpdatePylons);
             World.Instance.pylonManager.onPylonsCleared.AddListener(ClearPylons);
+            World.Instance.crewManager.onGameOver.AddListener(PlayGameOverText);
+            
+            
+            _audioSource = GetComponent<AudioSource>();
         }
         
         private void PlayIntroText()
@@ -67,6 +77,12 @@ namespace UI
         {
             _revealedTilesCount++;
             _targetPercent = (int)(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100);
+            if (_targetPercent >= _targetScorePercent)
+            {
+                if (_isWon) return;
+                PlayWinText();
+                _isWon = true;
+            }
         }
 
         private void UpdatePylons(GameObject pylon)
@@ -85,9 +101,24 @@ namespace UI
             _pylonText.text = $"{_pylonCount}/3";
         }
 
-        public void PlayGameOverText()
+        private void PlayGameOverText()
         {
             _gameOverText.gameObject.SetActive(true);
+            _audioSource.PlayOneShot(_loseSound);
+        }
+
+        private void PlayWinText()
+        {
+            if (_fadeCoroutine != null)
+            {
+                StopCoroutine(_fadeCoroutine);
+            }
+            
+            _winText.gameObject.SetActive(true);
+            _winText.alpha = 1f;
+            _audioSource.PlayOneShot(_winSound);
+            _fadeCoroutine = StartCoroutine(FadeWinText());
+            
         }
 
         private IEnumerator FadeIntroText() 
@@ -109,17 +140,24 @@ namespace UI
             _fadeCoroutine = null;
         }
         
-        private string FormatTime(float timeInSecs)
+        private IEnumerator FadeWinText() 
         {
-            if (timeInSecs < 0)
-            {
-                timeInSecs = 0;
-            }
-        
-            int minutes = Mathf.FloorToInt (timeInSecs / 60);
-            int seconds = Mathf.FloorToInt(timeInSecs % 60);
 
-            return $"{minutes:00}:{seconds:00}";
+            yield return new WaitForSeconds(3);
+            
+            float timer = 0f;
+            while (timer < 1)
+            {
+                float alpha = Mathf.Lerp(1f, 0f, timer / 1);
+                _winText.alpha = alpha;
+                
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            
+            _winText.alpha = 0f;
+            _fadeCoroutine = null;
         }
+        
     }
 }

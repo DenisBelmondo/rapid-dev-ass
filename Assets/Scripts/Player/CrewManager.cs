@@ -4,6 +4,7 @@ using Core;
 using Level;
 using UI;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 namespace Player
@@ -24,6 +25,10 @@ namespace Player
 
         [Header("Special Tilemaps")] 
         [SerializeField] public Tilemap waterTilemap;
+        
+        
+        public UnityEvent onGameOver = new();
+        public bool isGameOver = false;
 
         
         //private bool hasMadeFirstMove = false;
@@ -75,8 +80,7 @@ namespace Player
         {
             if (crewMembers.Count == 0)
             {
-                //FindAnyObjectByType<ProtoScorer>().PlayGameOverText();
-                Debug.Log("GAME OVER!!");
+                GameOver();
                 return;
             }
             
@@ -107,6 +111,13 @@ namespace Player
                     memberMovement.SetFollowTarget (crewMembers[i - 1]);
                 }
             }
+        }
+
+        private void GameOver()
+        {
+            if (isGameOver) return;
+            isGameOver = true;
+            onGameOver.Invoke();
         }
         
         public CharacterInstance GetLastMember()

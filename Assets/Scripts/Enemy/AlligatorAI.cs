@@ -1,123 +1,125 @@
-using System.Linq;
-using Enemy;
+using Level;
 using Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class AlligatorAI : MonoBehaviour
+namespace Enemy
 {
-    private enum AlligatorState { Dormant, Active }
+    public class AlligatorAI : MonoBehaviour
+    {
+        private enum AlligatorState { Dormant, Active }
+        private AlligatorState _currState =  AlligatorState.Dormant;
     
-    private AlligatorState _currState =  AlligatorState.Dormant;
-    
-    [Header("Settings")]
-    [SerializeField] private float _activationRange = 15f;
+        [Header("Settings")]
+        [SerializeField] private float activationRange = 15f;
 
-    private EnemyInstance _enemyInstance;
-    private AlligatorMovement _movement;
-    private Tilemap _waterTileMap;
+        private EnemyInstance _enemyInstance;
+        private AlligatorMovement _movement;
+        private Tilemap _waterTileMap;
+        private World _world;
 
-    void Awake()
-    {
-        _enemyInstance = GetComponent<EnemyInstance>();
-        _movement = GetComponent<AlligatorMovement>(); 
-
-    }
-
-    void Start()
-    {
-        _waterTileMap = CrewManager.Instance.waterTilemap;
-        SetState(AlligatorState.Dormant);
-    }
-
-    void Update()
-    {
-        switch (_currState)
+        void Awake()
         {
-            case AlligatorState.Dormant:
-                UpdateDormant();
-                break;
-            case AlligatorState.Active:
-                UpdateActive();
-                break;
+            _enemyInstance = GetComponent<EnemyInstance>();
+            _movement = GetComponent<AlligatorMovement>();
+            _world = World.Instance;
         }
-    }
 
-    void SetState(AlligatorState newState)
-    {
-        if (_currState == newState) return;
-
-        _currState = newState;
-        switch (_currState)
+        void Start()
         {
-            case AlligatorState.Dormant:
-                if (_enemyInstance != null) _enemyInstance.aggroCollider.enabled = false;
-                break;
-            case AlligatorState.Active:
-                if (_enemyInstance != null) _enemyInstance.aggroCollider.enabled = true;
-                break;
+            _waterTileMap = _world.waterTilemap;
+            SetState(AlligatorState.Dormant);
         }
-    }
 
-    void UpdateDormant()
-    {
-        CharacterInstance target = FindValidTarget();
-        if (target != null)
+        void Update()
         {
-            SetState(AlligatorState.Active);
-            _movement.StartChasing(target);
-        }
-    }
-
-    void UpdateActive()
-    {
-        if (_movement.CurrentState == EnemyMovement.State.Idle)
-        {
-            
-            CharacterInstance newTarget = FindValidTarget();
-            if (newTarget != null)
+            switch (_currState)
             {
-                
-                _movement.StartChasing(newTarget);
-            }
-            else
-            {
-                
-                SetState(AlligatorState.Dormant);
+                case AlligatorState.Dormant:
+                    UpdateDormant();
+                    break;
+                case AlligatorState.Active:
+                    UpdateActive();
+                    break;
             }
         }
-    }
-    
-    private CharacterInstance FindValidTarget()
-    {
-        var crew = CrewManager.Instance.crewMembers;
-        CharacterInstance closestTarget = null;
-        float closestDistance = float.MaxValue;
 
-        foreach (var member in crew)
+        void SetState(AlligatorState newState)
         {
-            if (member == null) continue;
+            if (_currState == newState) return;
 
-            if (IsPositionOnWater(member.transform.position))
+            _currState = newState;
+            switch (_currState)
             {
-                float distanceToPlayer = Vector3.Distance(transform.position, member.transform.position);
-                if (distanceToPlayer <= _activationRange)
+                case AlligatorState.Dormant:
+                    if (_enemyInstance != null) _enemyInstance.aggroCollider.enabled = false;
+                    break;
+                case AlligatorState.Active:
+                    if (_enemyInstance != null) _enemyInstance.aggroCollider.enabled = true;
+                    break;
+            }
+        }
+
+        void UpdateDormant()
+        {
+            CharacterInstance target = FindValidTarget();
+            if (target != null)
+            {
+                SetState(AlligatorState.Active);
+                _movement.StartChasing(target);
+            }
+        }
+
+        void UpdateActive()
+        {
+            if (_movement.currentState == EnemyMovement.State.Idle)
+            {
+                CharacterInstance newTarget = FindValidTarget();
+                if (newTarget != null)
                 {
-                    if (distanceToPlayer < closestDistance)
-                    {
-                        closestDistance = distanceToPlayer;
-                        closestTarget = member;
-                    }
+                
+                    _movement.StartChasing(newTarget);
+                }
+                else
+                {
+                
+                    SetState(AlligatorState.Dormant);
                 }
             }
         }
-        return closestTarget; 
-    }
+    
+        private CharacterInstance FindValidTarget()
+        {
+            //TODO- Use Physics2D.OverlapCircleAll?
+            var crew = _world.crewManager.crewMembers;
+            CharacterInstance closestTarget = null;
+            float closestDistance = float.MaxValue;
 
-    private bool IsPositionOnWater(Vector3 worldPosition)
-    {
-        if (_waterTileMap == null) return false;
-        Vector3Int cellPosition = _waterTileMap.WorldToCell(worldPosition);
-        return _waterTileMap.HasTile(cellPosition);
+            foreach (var member in crew)
+            {
+                if (member == null) continue;
+
+                if (IsPositionOnWater(member.transform.position))
+                {
+                    float distanceToPlayer = Vector3.Distance(transform.position, member.transform.position);
+                    if (distanceToPlayer <= activationRange)
+                    {
+                        if (distanceToPlayer < closestDistance)
+                        {
+                            closestDistance = distanceToPlayer;
+                            closestTarget = member;
+                        }
+                    }
+                }
+            }
+            return closestTarget; 
+        }
+
+        private bool IsPositionOnWater(Vector3 worldPosition)
+        {
+            if (_waterTileMap == null) return false;
+            Vector3Int cellPosition = _waterTileMap.WorldToCell(worldPosition);
+            return _waterTileMap.HasTile(cellPosition);
+        }
     }
 }

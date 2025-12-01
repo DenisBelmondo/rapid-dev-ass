@@ -1,21 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using Managers;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Player
 {
-    public class CrewManager : Singleton<CrewManager>
+    public class CrewManager : MonoBehaviour
     {
-        protected override bool PersistBetweenScenes => false;
-
         public List<CharacterInstance> crewMembers = new List<CharacterInstance>();
         public CharacterInstance Leader { get; private set; }
         public CharacterMovement LeaderMovement { get; private set; }
-        
         public float GroupSpeed { get; private set; }
 
         [Header("Group Speed Settings")] 
@@ -38,9 +34,9 @@ namespace Player
             CharacterInstance.OnStatsChanged -= UpdateCrewOrder;
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            //base.Awake();
             if (waterTilemap == null)
             {
                 Debug.LogError("No waterTilemap assigned in inspector!");
@@ -79,7 +75,7 @@ namespace Player
         {
             if (crewMembers.Count == 0)
             {
-                FindAnyObjectByType<ProtoScorer>().PlayGameOverText();
+                //FindAnyObjectByType<ProtoScorer>().PlayGameOverText();
                 Debug.Log("GAME OVER!!");
                 return;
             }

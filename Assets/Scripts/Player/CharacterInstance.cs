@@ -1,6 +1,6 @@
 using System;
+using Level;
 using Managers;
-using Objects;
 using UnityEngine;
 
 namespace Player
@@ -24,23 +24,27 @@ namespace Player
 		public float maxFollowDistance = 5f;
 		
 		private SpriteRenderer _spriteRenderer;
+		
+		private CrewManager _crewManager;
+		private PylonManager _pylonManager;
 
 		private void Awake()
 		{
 			_spriteRenderer = GetComponent<SpriteRenderer>();
 			_spriteRenderer.sprite = characterData.characterSprite;
+			_crewManager = World.Instance.crewManager;
+			_pylonManager = World.Instance.pylonManager;
 		}
 
 		//follow distance should be relative to the leader, so we calculate follow distance in this nifty function.
 		public float GetFollowDistance()
 		{
-			var crewManager = CrewManager.Instance;
-			if (crewManager == null || crewManager.Leader == null)
+			if (_crewManager == null || _crewManager.Leader == null)
 			{
 				return minFollowDistance;
 			}
 			
-			var leader = crewManager.Leader;
+			var leader = _crewManager.Leader;
 			float speedRatio = leader.food / 100f;
 			
 			float dynamicMaxDistance = Mathf.Lerp(minFollowDistance, maxFollowDistance, speedRatio);
@@ -49,11 +53,10 @@ namespace Player
 
 		public void Die()
 		{
-			var crewManager = CrewManager.Instance;
 			Instantiate(characterData.corpsePrefab, transform.position, Quaternion.identity);
-			crewManager.crewMembers.Remove(this);
+			_crewManager.crewMembers.Remove(this);
 			OnStatsChanged?.Invoke();
-			PylonManager.Instance.ClearPylons();
+			_pylonManager.ClearPylons();
 			Destroy(gameObject);
 		}
     }

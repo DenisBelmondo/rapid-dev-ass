@@ -1,28 +1,20 @@
+using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileMapCollection : MonoBehaviour
+public class FogController : MonoBehaviour
 {
-    [SerializeField]
-    public Tilemap BackgroundTilemap;
-
-    [SerializeField]
-    public GameObject DrawTile;
-
-    [SerializeField]
-    public Tilemap FogTilemap;
-
+    [SerializeField] public Tilemap fogTilemap;
     private float _t;
     private HashSet<Vector2Int> _drawnTiles;
-    
-    //camilo stuff. i am so sorry.
-    private ProtoScorer _scorer;
+
+    public event Action<Vector2Int> OnTileRevealed; //For Score Uses.
 
     public void Start()
     {
-        _scorer = FindFirstObjectByType<ProtoScorer>();
+        if(fogTilemap == null) Debug.LogError("FogController: fogTilemap is null");
         _drawnTiles = new();
     }
 
@@ -45,13 +37,8 @@ public class TileMapCollection : MonoBehaviour
                     return;
                 }
 
-                FogTilemap.SetTile(new(x, y, 0), tile);
+                fogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
-                if (_scorer != null)
-                {
-                    _scorer.CheckAndRegisterRevealedTile(tilePos);
-                }
-                
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }

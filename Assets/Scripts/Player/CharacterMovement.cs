@@ -1,4 +1,4 @@
-using System;
+using Level;
 using UnityEngine;
 
 namespace Player
@@ -17,15 +17,14 @@ namespace Player
         private int LeashPathIndex {get; set;}
         private float LeashDistanceAlongSegment { get; set; }
         private CharacterMovement _characterToFollow;
-        private bool _isLeader = false;
-        private float _movementStoppingDistance = 0.05f;
+        private bool _isLeader;
+        private readonly float _movementStoppingDistance = 0.05f;
         
         //Obstacle speed effects
         private float _speedMultiplier = 1.0f;
-
-        private bool amIInWater = false;
+        private bool _amIInWater;
         
-        
+        private CrewManager _crewManager;
         
         private void Awake()
         {
@@ -36,6 +35,7 @@ namespace Player
             
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _crewManager = World.Instance.crewManager;
         }
 
         public void SetFollowTarget(CharacterInstance target)
@@ -52,21 +52,21 @@ namespace Player
         
         private void UpdateSpeedMultiplier()
         {
-            Vector3Int cellPosition = CrewManager.Instance.waterTilemap.WorldToCell(transform.position);
+            Vector3Int cellPosition = _crewManager.waterTilemap.WorldToCell(transform.position);
 
-            if (!amIInWater && CrewManager.Instance.waterTilemap.HasTile(cellPosition))
+            if (!_amIInWater && _crewManager.waterTilemap.HasTile(cellPosition))
             {
-                amIInWater = true;
-                CrewManager.Instance.GetComponent<AudioSource>().Play();
+                _amIInWater = true;
+                _crewManager.GetComponent<AudioSource>().Play();
             }
 
-            if (!CrewManager.Instance.waterTilemap.HasTile(cellPosition))
+            if (!_crewManager.waterTilemap.HasTile(cellPosition))
             {
-                amIInWater = false;
+                _amIInWater = false;
             }
             
-            _speedMultiplier = amIInWater ? CrewManager.Instance.waterSpeedMult : 1.0f;
-            _animator.SetBool("InWater", amIInWater);
+            _speedMultiplier = _amIInWater ? _crewManager.waterSpeedMult : 1.0f;
+            _animator.SetBool("InWater", _amIInWater);
         }
 
         private void FixedUpdate()
@@ -75,7 +75,7 @@ namespace Player
             
             if (_isLeader)
             {
-                _rb.linearVelocity = _moveDirection * (CrewManager.Instance.GroupSpeed * _speedMultiplier);
+                _rb.linearVelocity = _moveDirection * (_crewManager.GroupSpeed * _speedMultiplier);
 
                 var path = PlayerPathManager.Instance.pathHistory;
                 if (path.Count >= 2)
@@ -100,7 +100,7 @@ namespace Player
 
                 if (distanceToTarget > _movementStoppingDistance)
                 {
-                    float speed = CrewManager.Instance.GroupSpeed * _speedMultiplier;
+                    float speed = _crewManager.GroupSpeed * _speedMultiplier;
                     Vector3 direction = (targetPos - currentPos).normalized;
                     
                     //check for overshoot

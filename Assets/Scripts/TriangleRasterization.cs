@@ -1,9 +1,12 @@
-using System.Numerics;
 using System;
 using System.Collections;
+using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 public static class TriangleRasterization
 {
+    private const float UNIFORM_DURATION = 0.5f;
+    
     public struct WritableBufferInterface<TValue>
     {
         public delegate void SetDelegate(int x, int y, TValue value);
@@ -70,11 +73,15 @@ public static class TriangleRasterization
 
     public static IEnumerator RasterizeTriangleAsync<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
     {
-        const int AVERAGE_NUM_TILES = 20;
+        //const int AVERAGE_NUM_TILES = 20;
 
         int numTiles = HowManyTiles(v0, v1, v2);
-        float speedMul = Math.Max(1, AVERAGE_NUM_TILES / numTiles);
-
+        if (numTiles <= 0)
+        {
+            Debug.LogError("Cannot rasterize a triangle with a negative number of tiles.");
+        }
+        float delayPerTile = UNIFORM_DURATION / numTiles;
+        
         // Get the minimum and maximum bounding box
         int minX = (int)Math.Min(Math.Min(v0.X, v1.X), v2.X);
         int maxX = (int)Math.Max(Math.Max(v0.X, v1.X), v2.X);
@@ -90,7 +97,8 @@ public static class TriangleRasterization
                 if (IsPointInTriangle(new(x, y), v0, v1, v2))
                 {
                     bufferInterface.Set?.Invoke(x, y, value);
-                    yield return new UnityEngine.WaitForSeconds(1 / 200F / speedMul);
+                    //yield return new UnityEngine.WaitForSeconds(1 / 200F / speedMul);
+                    yield return new UnityEngine.WaitForSeconds(delayPerTile);
                 }
             }
         }

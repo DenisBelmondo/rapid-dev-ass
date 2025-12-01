@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -99,7 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -130,7 +130,7 @@ TextureImporter:
         x: 0
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,7 +152,7 @@ TextureImporter:
         x: 16
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,10 +171,10 @@ TextureImporter:
       name: JungleMapperSnakeSleepSprites_2
       rect:
         serializedVersion: 2
-        x: 18
-        y: 11
-        width: 7
-        height: 5
+        x: 32
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,10 +193,10 @@ TextureImporter:
       name: JungleMapperSnakeSleepSprites_3
       rect:
         serializedVersion: 2
-        x: 32
+        x: 48
         y: 0
         width: 16
-        height: 13
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -211,121 +211,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: JungleMapperSnakeSleepSprites_4
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 11
-        width: 7
-        height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 43f1548f7b549e7c0800000000000000
-      internalID: -4041622534141698252
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: JungleMapperSnakeSleepSprites_5
-      rect:
-        serializedVersion: 2
-        x: 39
-        y: 10
-        width: 7
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 412253fa33b93d620800000000000000
-      internalID: 2797750439812342292
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: JungleMapperSnakeSleepSprites_6
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 621d552332fd79c90800000000000000
-      internalID: -7163011340048150234
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: JungleMapperSnakeSleepSprites_7
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 11
-        width: 7
-        height: 5
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c5fec4b09d83b80d0800000000000000
-      internalID: -3419576987209109668
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: JungleMapperSnakeSleepSprites_8
-      rect:
-        serializedVersion: 2
-        x: 55
-        y: 10
-        width: 7
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a200718454ac3c180800000000000000
-      internalID: -9096204423447248854
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 80db797406025e04dbd5b9d91e0cbf87
     internalID: 0
     vertices: []
     indices: 
@@ -339,11 +229,6 @@ TextureImporter:
       JungleMapperSnakeSleepSprites_1: -2341959754593179630
       JungleMapperSnakeSleepSprites_2: 331573764857648072
       JungleMapperSnakeSleepSprites_3: 3353046996898031939
-      JungleMapperSnakeSleepSprites_4: -4041622534141698252
-      JungleMapperSnakeSleepSprites_5: 2797750439812342292
-      JungleMapperSnakeSleepSprites_6: -7163011340048150234
-      JungleMapperSnakeSleepSprites_7: -3419576987209109668
-      JungleMapperSnakeSleepSprites_8: -9096204423447248854
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

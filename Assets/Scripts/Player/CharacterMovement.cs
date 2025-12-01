@@ -25,6 +25,8 @@ namespace Player
         private bool _amIInWater;
         
         private CrewManager _crewManager;
+
+        private bool _isFacingLeft;
         
         private void Awake()
         {
@@ -123,7 +125,16 @@ namespace Player
             
             _animator.SetFloat("Speed", _rb.linearVelocity.magnitude);
 
-            _spriteRenderer.flipX = _rb.linearVelocity.x < 0;
+            if (_rb.linearVelocityX < 0)
+            {
+                _isFacingLeft = true;
+            }
+            else if (_rb.linearVelocityX > 0)
+            {
+                _isFacingLeft = false;
+            }
+            
+            _spriteRenderer.flipX = _isFacingLeft;
         }
 
         void UpdateLeashPosition()

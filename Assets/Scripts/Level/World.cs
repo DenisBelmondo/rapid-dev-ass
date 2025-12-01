@@ -1,6 +1,7 @@
 using Core;
 using Managers;
 using Player;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 

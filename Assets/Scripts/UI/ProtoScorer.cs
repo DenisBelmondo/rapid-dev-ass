@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Level;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,83 +9,41 @@ namespace UI
 {
     public class ProtoScorer : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _timerText;
         [SerializeField] private TMP_Text _percentText;
+        [SerializeField] private TMP_Text _targetPercentText;
         [SerializeField] private TMP_Text _introText;
         [SerializeField] private TMP_Text _gameOverText;
         [SerializeField] private TMP_Text _winText;
-        [SerializeField] private TMP_Text _timeOutText;
         
-        [SerializeField] private float startTimeSeconds = 300f;
-        
-        [SerializeField] private Tilemap targetAreaTilemap;
+        [Header("Score")]
+        [SerializeField] private int _targetScorePercent = 80;
+
         private Coroutine _fadeCoroutine;
-        
-        
-        
-        public float CurrentTime { get; private set; }
-        private bool _isTimerRunning = true;
-        
         private int _totalTilesInArea;
         private int _revealedTilesCount;
-        
+
+        private int _targetPercent = 0;
+        private Tilemap _targetTilemap;
 
         private void Awake()
         {
             PlayIntroText();
+
+            _targetTilemap = World.Instance.targetTilemap;
             
-        }
-
-        private void Start()
-        {
-            CurrentTime = startTimeSeconds;
-            _isTimerRunning = true;
+            foreach (var pos in _targetTilemap.cellBounds.allPositionsWithin)
+            {
+                if (_targetTilemap.HasTile(pos))
+                {
+                    _totalTilesInArea++;
+                }
+            }
+            Debug.Log("Total tiles:  " + _totalTilesInArea);
+            _targetPercentText.text = $"Target: {_targetScorePercent}%";
             
-            _totalTilesInArea = 0;
-            if (targetAreaTilemap != null)
-            {
-                foreach (var pos in targetAreaTilemap.cellBounds.allPositionsWithin)
-                {
-                    if (targetAreaTilemap.HasTile(pos))
-                    {
-                        _totalTilesInArea++;
-                    }
-                }
-            }
+            
+            World.Instance.fogController.OnTileRevealed += UpdatePercent;
         }
-        
-        public void CheckAndRegisterRevealedTile(Vector2Int tilePosition)
-        {
-            if (_revealedTilesCount >= _totalTilesInArea) return;
-
-            //Check if the revealed tile is part of our target area.
-            if (targetAreaTilemap != null && targetAreaTilemap.HasTile((Vector3Int)tilePosition))
-            {
-                _revealedTilesCount++;
-                
-                _percentText.text = $"{(int)(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100)}%";
-
-                if (_revealedTilesCount >= _totalTilesInArea)
-                {
-                    _winText.gameObject.SetActive(true);
-                }
-            }
-        }
-
-        private void Update()
-        {
-            _timerText.text = FormatTime(CurrentTime);
-            if (_isTimerRunning)
-            {
-                CurrentTime -= Time.deltaTime;
-
-                if (CurrentTime <= 0)
-                {
-                    TimeIsUp();
-                }
-            }
-        }
-        
         
         private void PlayIntroText()
         {
@@ -95,6 +55,18 @@ namespace UI
             _introText.alpha = 1f;
             _fadeCoroutine = StartCoroutine(FadeIntroText());
             
+        }
+
+        //NOTE- ONLY WORKS IF THE ENTIRE MAP IS THE TARGETTILEMAP.. LOL
+        private void UpdatePercent()
+        {
+            _revealedTilesCount++;
+            _targetPercent = (int)(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100);
+        }
+
+        void Update()
+        {
+            _percentText.text = _targetPercent + "%";
         }
 
         public void PlayGameOverText()
@@ -133,15 +105,5 @@ namespace UI
 
             return $"{minutes:00}:{seconds:00}";
         }
-        
-        void TimeIsUp()
-        {
-            _isTimerRunning = false;
-            CurrentTime = 0;
-            
-            _winText.gameObject.SetActive(true);
-            Time.timeScale = 0;
-        }
-        
     }
 }

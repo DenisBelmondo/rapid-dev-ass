@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Level;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -10,8 +11,9 @@ public class FogController : MonoBehaviour
     [SerializeField] public Tilemap fogTilemap;
     private float _t;
     private HashSet<Vector2Int> _drawnTiles;
-
-    public event Action<Vector2Int> OnTileRevealed; //For Score Uses.
+    
+    public event Action OnTileRevealed; //For Score Uses.
+    
 
     private IEnumerator RasterizeTriangle(Vector3 p1, Vector3 p2, Vector3 p3)
     {
@@ -29,6 +31,8 @@ public class FogController : MonoBehaviour
 
                 fogTilemap.SetTile(new(x, y, 0), tile);
                 _drawnTiles.Add(tilePos);
+                
+                OnTileRevealed.Invoke();
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }
@@ -37,6 +41,7 @@ public class FogController : MonoBehaviour
     {
         if(fogTilemap == null) Debug.LogError("FogController: fogTilemap is null");
         _drawnTiles = new();
+        
     }
 
     public void Update()

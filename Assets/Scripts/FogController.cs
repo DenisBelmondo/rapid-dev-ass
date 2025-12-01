@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
@@ -12,20 +13,9 @@ public class FogController : MonoBehaviour
 
     public event Action<Vector2Int> OnTileRevealed; //For Score Uses.
 
-    public void Start()
+    private IEnumerator RasterizeTriangle(Vector3 p1, Vector3 p2, Vector3 p3)
     {
-        if(fogTilemap == null) Debug.LogError("FogController: fogTilemap is null");
-        _drawnTiles = new();
-    }
-
-    public void Update()
-    {
-        _t += Time.deltaTime;
-    }
-
-    public void OnTriangleFormed(Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        TriangleRasterization.RasterizeTriangle(new()
+        yield return TriangleRasterization.RasterizeTriangleAsync(new()
         {
             BufferWidth = 1000,
             BufferHeight = 1000,
@@ -42,4 +32,17 @@ public class FogController : MonoBehaviour
             },
         },  new(p1.x, p1.y), new(p2.x, p2.y), new(p3.x, p3.y), (TileBase)null);
     }
+
+    public void Start()
+    {
+        if(fogTilemap == null) Debug.LogError("FogController: fogTilemap is null");
+        _drawnTiles = new();
+    }
+
+    public void Update()
+    {
+        _t += Time.deltaTime;
+    }
+
+    public void OnTriangleFormed(Vector3 p1, Vector3 p2, Vector3 p3) => StartCoroutine(RasterizeTriangle(p1, p2, p3));
 }

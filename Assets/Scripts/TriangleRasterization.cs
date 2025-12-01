@@ -20,6 +20,32 @@ public static class TriangleRasterization
         }
     }
 
+    public static int HowManyTiles(Vector2 v0, Vector2 v1, Vector2 v2)
+    {
+        int numTiles = 0;
+
+        // Get the minimum and maximum bounding box
+        int minX = (int)Math.Min(Math.Min(v0.X, v1.X), v2.X);
+        int maxX = (int)Math.Max(Math.Max(v0.X, v1.X), v2.X);
+        int minY = (int)Math.Min(Math.Min(v0.Y, v1.Y), v2.Y);
+        int maxY = (int)Math.Max(Math.Max(v0.Y, v1.Y), v2.Y);
+
+        // Iterate through the bounding box
+        for (int y = minY; y <= maxY; y++)
+        {
+            for (int x = minX; x <= maxX; x++)
+            {
+                // Calculate barycentric coordinates
+                if (IsPointInTriangle(new(x, y), v0, v1, v2))
+                {
+                    numTiles += 1;
+                }
+            }
+        }
+
+        return numTiles;
+    }
+
     public static void RasterizeTriangle<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
     {
         // Get the minimum and maximum bounding box
@@ -44,6 +70,11 @@ public static class TriangleRasterization
 
     public static IEnumerator RasterizeTriangleAsync<TValue>(WritableBufferInterface<TValue> bufferInterface, Vector2 v0, Vector2 v1, Vector2 v2, TValue value)
     {
+        const int AVERAGE_NUM_TILES = 20;
+
+        int numTiles = HowManyTiles(v0, v1, v2);
+        float speedMul = Math.Max(1, AVERAGE_NUM_TILES / numTiles);
+
         // Get the minimum and maximum bounding box
         int minX = (int)Math.Min(Math.Min(v0.X, v1.X), v2.X);
         int maxX = (int)Math.Max(Math.Max(v0.X, v1.X), v2.X);
@@ -59,7 +90,7 @@ public static class TriangleRasterization
                 if (IsPointInTriangle(new(x, y), v0, v1, v2))
                 {
                     bufferInterface.Set?.Invoke(x, y, value);
-                    yield return new UnityEngine.WaitForSeconds(1 / 200F);
+                    yield return new UnityEngine.WaitForSeconds(1 / 200F / speedMul);
                 }
             }
         }

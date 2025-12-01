@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
+using Level;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -24,6 +25,9 @@ namespace Player
         [Header("Special Tilemaps")] 
         [SerializeField] public Tilemap waterTilemap;
 
+        
+        //private bool hasMadeFirstMove = false;
+
         private void OnEnable()
         {
             CharacterInstance.OnStatsChanged += UpdateCrewOrder;
@@ -36,11 +40,7 @@ namespace Player
 
         private void Awake()
         {
-            //base.Awake();
-            if (waterTilemap == null)
-            {
-                Debug.LogError("No waterTilemap assigned in inspector!");
-            }
+            waterTilemap = World.Instance.waterTilemap;
         }
 
         private void Start()
@@ -87,7 +87,6 @@ namespace Player
             if (Leader != previousLeader)
             {
                 LeaderMovement = (Leader != null) ? Leader.GetComponent<CharacterMovement>() : null;
-                //UpdateFollowTargets();
                 PlayerPathManager.Instance.SetLeader(Leader.transform);
             }
             UpdateFollowTargets();

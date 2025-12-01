@@ -36,6 +36,7 @@ namespace Player
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _crewManager = World.Instance.crewManager;
+            _leashTargetWorldPosition = _crewManager.transform.position;
         }
 
         public void SetFollowTarget(CharacterInstance target)

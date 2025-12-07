@@ -28,7 +28,7 @@ namespace UI
         private int _totalTilesInArea;
         private int _revealedTilesCount;
 
-        private int _targetPercent = 0;
+        private float _currPercent = 0;
         private Tilemap _targetTilemap;
 
         private int _pylonCount;
@@ -76,8 +76,8 @@ namespace UI
         private void UpdatePercent()
         {
             _revealedTilesCount++;
-            _targetPercent = (int)(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100);
-            if (_targetPercent >= _targetScorePercent)
+            _currPercent = MathF.Round(((float)_revealedTilesCount / (float)_totalTilesInArea) * 100, 2);
+            if (_currPercent >= _targetScorePercent)
             {
                 if (_isWon) return;
                 PlayWinText();
@@ -97,7 +97,7 @@ namespace UI
 
         void Update()
         {
-            _percentText.text = _targetPercent + "%";
+            _percentText.text = _currPercent + "%";
             _pylonText.text = $"{_pylonCount}/3";
         }
 

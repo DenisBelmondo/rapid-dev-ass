@@ -1,7 +1,9 @@
 using System;
 using Level;
 using Managers;
+using Objects;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -10,7 +12,6 @@ namespace Player
         [Header("Data")] public CharacterData characterData;
 
         public static event System.Action OnStatsChanged;
-        //TODO- Link this event to any change in food, mood, or deaths.
         
         [Header("Runtime Stats")] 
         [Range(1f, 100f)]
@@ -22,6 +23,11 @@ namespace Player
 		[Header("Follow Settings")]
 		public float minFollowDistance = 1.5f;
 		public float maxFollowDistance = 5f;
+
+		
+		public ItemData heldItem;
+		[SerializeField] private Transform itemHoldPoint;
+		private GameObject _heldItemVisual;
 		
 		private SpriteRenderer _spriteRenderer;
 		
@@ -51,8 +57,48 @@ namespace Player
 			return Mathf.Lerp(dynamicMaxDistance, minFollowDistance, food/100f);
 		}
 
+		public void AssignItem(ItemData itemData)
+		{
+			if (heldItem != null)
+			{
+				Debug.Log("Already holding something!");
+				return;
+			}
+			heldItem = itemData;
+			Debug.Log($"{characterData.characterName} received {itemData.itemName}");
+
+			if (itemData.heldItemPrefab != null && itemHoldPoint != null)
+			{
+				_heldItemVisual = Instantiate(itemData.heldItemPrefab.gameObject, itemHoldPoint);
+			}
+		}
+
+		public void DropItem()
+		{
+			if (heldItem == null) return;
+			
+			Debug.Log($"{characterData.characterName} dropped {heldItem.itemName}");
+
+			if (heldItem.worldItemPrefab != null)
+			{
+				Instantiate(heldItem.worldItemPrefab, transform.position, Quaternion.identity);
+			}
+
+			ClearItem();
+		}
+
+		public void ClearItem()
+		{
+			if (_heldItemVisual != null)
+			{
+				Destroy(_heldItemVisual);
+			}
+			heldItem = null;
+		}
+		
 		public void Die()
 		{
+			DropItem();
 			Instantiate(characterData.corpsePrefab, transform.position, Quaternion.identity);
 			_crewManager.crewMembers.Remove(this);
 			OnStatsChanged?.Invoke();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Level;
+using Objects;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
@@ -111,6 +112,38 @@ namespace Player
             }
         }
 
+        public bool AssignItemToCrew(ItemData itemData)
+        {
+            foreach (var member in crewMembers)
+            {
+                if (member.heldItem == null)
+                {
+                    member.AssignItem(itemData);
+                    return true;
+                }
+            }
+            Debug.Log("No crew member available to take the item!");
+            return false;
+        }
+
+        public void UseItem(int memberIndex)
+        {
+            if (memberIndex < 0 || memberIndex >= crewMembers.Count)
+            {
+                Debug.Log($"Invalid member index: {memberIndex}");
+                return;
+            }
+            
+            CharacterInstance member = crewMembers[memberIndex];
+            if (member.heldItem == null)
+            {
+                Debug.Log($"{member.characterData.characterName} has no item to use.");
+                return;
+            }
+            member.heldItem.heldItemPrefab.Execute(member);
+            member.ClearItem();
+        }
+        
         private void GameOver()
         {
             if (isGameOver) return;

@@ -76,6 +76,14 @@ namespace Player
 
         private void Update()
         {
+            
+            //fuck you fuck you fuck you
+            if (Input.GetKeyDown(KeyCode.Alpha1)) { _world.crewManager.UseItem(0); }
+            if (Input.GetKeyDown(KeyCode.Alpha2)) { _world.crewManager.UseItem(1); }
+            if (Input.GetKeyDown(KeyCode.Alpha3)) { _world.crewManager.UseItem(2); }
+            if (Input.GetKeyDown(KeyCode.Alpha4)) { _world.crewManager.UseItem(3); }
+            
+            
             Vector2 moveInput = _playerInput.Player.Move.ReadValue<Vector2>();
             if (_world.crewManager.LeaderMovement != null)
             {

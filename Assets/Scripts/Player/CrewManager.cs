@@ -93,7 +93,10 @@ namespace Player
                 PlayerPathManager.Instance.SetLeader(Leader.transform);
             }
             UpdateFollowTargets();
-            World.Instance.inventory.UpdateInventory(crewMembers);
+            if (World.Instance.inventory != null)
+            {
+                World.Instance.inventory.UpdateInventory(crewMembers);
+            }
             //Debug.Log(crewMembers.Count);
         }
 

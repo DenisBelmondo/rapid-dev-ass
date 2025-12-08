@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Objects
 {
@@ -8,6 +7,9 @@ namespace Objects
     {
         [Header("Info")] 
         [SerializeField] public string itemName;
+
+        [SerializeField] public string itemDesc;
+        [SerializeField] public Sprite itemSprite;
         
         [Header("Prefabs")]
         [SerializeField] public GameObject worldItemPrefab;

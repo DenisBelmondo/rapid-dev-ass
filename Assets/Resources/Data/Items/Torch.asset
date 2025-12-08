@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Torch
   m_EditorClassIdentifier: 
   itemName: Torch
+  itemDesc: On use, increases visibility for 10 seconds.
+  itemSprite: {fileID: 21300000, guid: a15b87655d804044492c20a7d9bedef1, type: 3}
   worldItemPrefab: {fileID: 7263103891705787535, guid: 004ee7c347c2b5148963dbe609956548, type: 3}
   heldItemPrefab: {fileID: 3982627676334360265, guid: f3b46702703fb414eb33ec327889e08d, type: 3}

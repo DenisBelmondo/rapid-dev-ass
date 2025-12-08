@@ -93,6 +93,7 @@ namespace Player
                 PlayerPathManager.Instance.SetLeader(Leader.transform);
             }
             UpdateFollowTargets();
+            World.Instance.inventory.UpdateInventory(crewMembers);
             //Debug.Log(crewMembers.Count);
         }
 
@@ -114,13 +115,17 @@ namespace Player
 
         public bool AssignItemToCrew(ItemData itemData)
         {
+            int i = 0;
             foreach (var member in crewMembers)
             {
                 if (member.heldItem == null)
                 {
                     member.AssignItem(itemData);
+                    World.Instance.inventory.UpdateInventory(crewMembers);
                     return true;
                 }
+
+                i++;
             }
             Debug.Log("No crew member available to take the item!");
             return false;
@@ -142,6 +147,7 @@ namespace Player
             }
             member.heldItem.heldItemPrefab.Execute(member);
             member.ClearItem();
+            World.Instance.inventory.UpdateInventory(crewMembers);
         }
         
         private void GameOver()

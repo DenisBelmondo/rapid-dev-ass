@@ -1,6 +1,7 @@
 using Core;
 using Managers;
 using Player;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,6 +15,7 @@ namespace Level
         [Header("Systems")]
         [SerializeField] public FogController fogController;
         [SerializeField] public PylonManager  pylonManager;
+        [SerializeField] public Inventory inventory;
 
         [Header("Tilemaps")] 
         [SerializeField] public Tilemap waterTilemap;
@@ -28,6 +30,7 @@ namespace Level
             if (waterTilemap == null) Debug.Log("WORLD: WaterTilemap is null!");
             if (targetTilemap == null) Debug.Log("WORLD: TargetTilemap is null!");
             if (crewManager == null) Debug.Log("WORLD: CrewManager is null!");
+            if(inventory == null) Debug.Log("WORLD: Inventory is null!");
         }
 
         public void Start()

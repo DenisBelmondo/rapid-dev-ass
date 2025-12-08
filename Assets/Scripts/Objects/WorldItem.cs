@@ -1,5 +1,7 @@
 using System;
 using Level;
+using UI.Feedback;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Objects
@@ -24,6 +26,7 @@ namespace Objects
 
                 if (pickedUp)
                 {
+                    DebugTexter.Instance.UpdateText($"Picked up {itemData.name}", itemData.itemDesc, Color.cyan);
                     Destroy(gameObject);
                 }
             }

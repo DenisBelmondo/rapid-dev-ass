@@ -33,6 +33,8 @@ namespace Player
 		
 		private CrewManager _crewManager;
 		private PylonManager _pylonManager;
+		
+		public AudioSource audioSource;
 
 		private void Awake()
 		{
@@ -40,6 +42,7 @@ namespace Player
 			_spriteRenderer.sprite = characterData.characterSprite;
 			_crewManager = World.Instance.crewManager;
 			_pylonManager = World.Instance.pylonManager;
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		//follow distance should be relative to the leader, so we calculate follow distance in this nifty function.
@@ -71,6 +74,11 @@ namespace Player
 			{
 				_heldItemVisual = Instantiate(itemData.heldItemPrefab.gameObject, itemHoldPoint);
 			}
+		}
+
+		public void InstantiateEffect(GameObject effect)
+		{
+			Instantiate(effect, itemHoldPoint);
 		}
 
 		public void DropItem()

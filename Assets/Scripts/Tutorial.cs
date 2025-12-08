@@ -40,6 +40,14 @@ public class Tutorial : MonoBehaviour
 	{
 		titleSplashRenderer.sprite = successSprite;
 		tutorialText.text = "";
+		if (_tutorialCounter > 5)
+		{
+			tutorialText.text = "";
+		}
+		else
+		{
+			tutorialText.text = "Hold Space on a placed pylon to remove it";
+		}
 	}
 
 	private IEnumerator Exit()

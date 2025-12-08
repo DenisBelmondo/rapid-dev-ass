@@ -16,11 +16,14 @@ namespace Level
         [SerializeField] public FogController fogController;
         [SerializeField] public PylonManager  pylonManager;
         [SerializeField] public Inventory inventory;
+        [SerializeField] public Boat boat;
 
         [Header("Tilemaps")] 
         [SerializeField] public Tilemap waterTilemap;
         [SerializeField] public Tilemap targetTilemap; //tilemap for core objectives.
         [SerializeField] public CrewManager crewManager;
+        
+        
 
         protected override void Awake()
         {
@@ -31,6 +34,7 @@ namespace Level
             if (targetTilemap == null) Debug.Log("WORLD: TargetTilemap is null!");
             if (crewManager == null) Debug.Log("WORLD: CrewManager is null!");
             if(inventory == null) Debug.Log("WORLD: Inventory is null!");
+            if(boat == null) Debug.Log("WORLD: Boat is null!");
         }
 
         public void Start()

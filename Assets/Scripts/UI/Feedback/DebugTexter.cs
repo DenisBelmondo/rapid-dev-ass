@@ -10,6 +10,8 @@ namespace UI.Feedback
         private TMP_Text _bigText;
         [SerializeField] TMP_Text _descText;
         private Coroutine _fadeCoroutine;
+        
+        protected override bool PersistBetweenScenes => false;
 
         protected override void Awake()
         {

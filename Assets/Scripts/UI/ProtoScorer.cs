@@ -124,6 +124,7 @@ namespace UI
             _winText.alpha = 1f;
             _audioSource.PlayOneShot(_winSound);
             _fadeCoroutine = StartCoroutine(FadeWinText());
+            World.Instance.boat.Activate();
             
         }
 

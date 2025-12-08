@@ -1,3 +1,4 @@
+using System.Collections;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class Tutorial : MonoBehaviour
 		if(titleSplashRenderer == null) Debug.LogError("TUTORIAL: Missing title splash renderer");
 		if(tutorialText == null) Debug.LogError("TUTORIAL: Missing tutorial text");
 		if(successSprite == null) Debug.LogError("TUTORIAL: Missing success sprite");
-		
+
 		pylonSystem.onPylonRegistered.AddListener(OnPylonRegistered);
 		pylonSystem.onTriangleFormed.AddListener(OnTriangleFormed);
 	}
@@ -26,7 +27,7 @@ public class Tutorial : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			SceneManager.LoadScene("Camilo Gym");
+			StartCoroutine("Exit");
 		}
 	}
 
@@ -39,5 +40,13 @@ public class Tutorial : MonoBehaviour
 	{
 		titleSplashRenderer.sprite = successSprite;
 		tutorialText.text = "";
+	}
+
+	private IEnumerator Exit()
+	{
+		ScreenTransitionCanvas.Instance.StartFadeOut();
+		yield return new WaitForSeconds(1f);
+		SceneManager.LoadScene("Camilo Gym");
+		ScreenTransitionCanvas.Instance.StartFadeIn();
 	}
 }

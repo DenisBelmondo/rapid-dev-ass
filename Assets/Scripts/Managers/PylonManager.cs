@@ -7,7 +7,7 @@ namespace Managers
     public class PylonManager : MonoBehaviour 
     {
         public List<GameObject> activePylons = new List<GameObject>();
-        private readonly HashSet<Vector3> _pylonPositions = new HashSet<Vector3>();
+        private HashSet<Vector3> _pylonPositions = new HashSet<Vector3>();
 
         [SerializeField] private int maxPylons = 3;
 
@@ -16,7 +16,10 @@ namespace Managers
         public UnityEvent<Vector3, Vector3, Vector3> onTriangleFormed = new UnityEvent<Vector3, Vector3, Vector3>();
         public UnityEvent<GameObject> onPylonRegistered = new();
         public UnityEvent onPylonsCleared = new UnityEvent();
+        public UnityEvent<GameObject> onPylonRemoved = new UnityEvent<GameObject>();
 
+        public GameObject pylonToRemove;
+        
         private AudioSource _audioSource;
 
         private void Awake()
@@ -33,16 +36,14 @@ namespace Managers
 
             Vector3 snappedPos = GetSnappedPosition(playerTransform.position);
 
-            if (_pylonPositions.Contains(snappedPos))
+            if (_pylonPositions.Contains(snappedPos) && pylonToRemove != null)
             {
-                //DebugTexter.Instance.UpdateText("There's already a pylon at this position!", Color.red);
+                Debug.Log("Pylon already at this spot...");
                 return;
             }
 
             GameObject newPylon = Instantiate(pylonPrefab, snappedPos, Quaternion.identity);
-
-            //make it a diff color if it's the first one
-
+            
             if (activePylons.Count == 0)
             {
                 newPylon.GetComponent<SpriteRenderer>().color = Color.yellow;
@@ -53,6 +54,18 @@ namespace Managers
             Debug.Log($"Pylon {activePylons.Count} placed at {snappedPos}.");
             
             onPylonRegistered.Invoke(newPylon);
+        }
+
+        public void RemovePylon(GameObject pylon)
+        {
+            if (!activePylons.Contains(pylon)) return;
+            
+            Debug.Log($"Pylon at {pylon.transform.position} has been removed.");
+            activePylons.Remove(pylon);
+            _pylonPositions.Remove(pylon.transform.position);
+            
+            onPylonRemoved.Invoke(pylon);
+            Destroy(pylon);
         }
 
         public void OnPylonInteracted(GameObject interactedPylon)
@@ -66,16 +79,9 @@ namespace Managers
             if (interactedPylon == activePylons[0])
             {
                 Debug.Log("Triangle formed!");
-                //DebugTexter.Instance.UpdateText("Triangle Cleared! You may place more pylons.", Color.blue);
-
                 onTriangleFormed.Invoke(activePylons[0].transform.position, activePylons[1].transform.position, activePylons[2].transform.position);
                 _audioSource.Play();
-                
                 ClearPylons();
-            }
-            else
-            {
-                Debug.Log("This isn't the first pylon you placed!");
             }
         }
 

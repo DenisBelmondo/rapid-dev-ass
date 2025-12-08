@@ -53,6 +53,7 @@ namespace UI
             
             World.Instance.fogController.OnTileRevealed += UpdatePercent;
             World.Instance.pylonManager.onPylonRegistered.AddListener(UpdatePylons);
+            World.Instance.pylonManager.onPylonRemoved.AddListener(RemovePylon);
             World.Instance.pylonManager.onPylonsCleared.AddListener(ClearPylons);
             World.Instance.crewManager.onGameOver.AddListener(PlayGameOverText);
             
@@ -88,6 +89,11 @@ namespace UI
         private void UpdatePylons(GameObject pylon)
         {
             _pylonCount++;
+        }
+
+        private void RemovePylon(GameObject pylon)
+        {
+            _pylonCount--;
         }
 
         private void ClearPylons()

@@ -21,6 +21,9 @@ namespace UI.Feedback
             _pylonManager.onPylonRegistered.AddListener(OnPylonRegistered);
             _pylonManager.onPylonsCleared.AddListener(OnPylonsCleared);
             _pylonManager.onTriangleFormed.AddListener(OnTriangleFormed);
+            _pylonManager.onPylonRemoved.AddListener(OnPylonRemoved);
+
+            UpdateLinePositions();
         }
 
         private void Update()
@@ -28,6 +31,9 @@ namespace UI.Feedback
             if (_pylonManager.activePylons.Count > 0)
             {
                 _lines.SetPosition(_lines.positionCount - 1, _crewManager.Leader.transform.position);
+            } else if (_lines.positionCount > 0)
+            {
+                _lines.positionCount = 0;
             }
             
             if (_pylonManager.activePylons.Count == 3)
@@ -42,8 +48,14 @@ namespace UI.Feedback
             }
         }
 
-        private void OnPylonRegistered(GameObject pylon)
+        private void UpdateLinePositions()
         {
+            if (_pylonManager.activePylons.Count == 0)
+            {
+                _lines.positionCount = 0;
+                return;
+            }
+
             _lines.positionCount = _pylonManager.activePylons.Count + 1;
 
             for (int i = 0; i < _pylonManager.activePylons.Count; i++)
@@ -51,21 +63,25 @@ namespace UI.Feedback
                 _lines.SetPosition(i, _pylonManager.activePylons[i].transform.position);
             }
         }
+        
+        private void OnPylonRegistered(GameObject pylon)
+        {
+            UpdateLinePositions();
+        }
+
+        private void OnPylonRemoved(GameObject removedPylon)
+        {
+            UpdateLinePositions();
+        }
 
         private void OnPylonsCleared()
         {
-            for (int i = 0; i < _lines.positionCount; i++)
-            {
-                _lines.SetPosition(i, Vector3.zero);
-            }
+            _lines.positionCount = 0;
         }
 
         private void OnTriangleFormed(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            for (int i = 0; i < _lines.positionCount; i++)
-            {
-                _lines.SetPosition(i, Vector3.zero);
-            }
+            _lines.positionCount = 0;
         }
     }
 }

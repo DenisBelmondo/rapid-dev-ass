@@ -259,6 +259,7 @@ MonoBehaviour:
   maxFollowDistance: 5
   heldItem: {fileID: 0}
   itemHoldPoint: {fileID: 7681537589147711265}
+  audioSource: {fileID: 0}
 --- !u!114 &1042693176230731151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,8 +306,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.3}
-  m_Size: {x: 1, y: 1}
+  m_Offset: {x: 0, y: -0.6}
+  m_Size: {x: 0.5, y: 0.5}
   m_Direction: 0
 --- !u!95 &9205630085774914263
 Animator:

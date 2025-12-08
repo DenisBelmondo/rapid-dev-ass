@@ -12,6 +12,9 @@ namespace Level
     /// </summary>
     public class World : Singleton<World>
     {
+        
+        protected override bool PersistBetweenScenes => false;
+        
         [Header("Systems")]
         [SerializeField] public FogController fogController;
         [SerializeField] public PylonManager  pylonManager;

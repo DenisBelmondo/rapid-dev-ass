@@ -15,6 +15,7 @@ public class Boat : MonoBehaviour
         if (isActivated && collision.CompareTag("Player"))
         {
             StartCoroutine("NextLevel");
+            
         }
     }
     

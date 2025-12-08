@@ -15,6 +15,7 @@ namespace Objects
             character.audioSource.Play();
             character.InstantiateEffect(torchVignettePrefab);
             //Debug.Log("Used torch!");
+            character.ClearItem();
         }
     }
 }

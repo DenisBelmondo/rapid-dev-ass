@@ -27,7 +27,7 @@ namespace Player
 		
 		public ItemData heldItem;
 		[SerializeField] private Transform itemHoldPoint;
-		private GameObject _heldItemVisual;
+		public GameObject heldItemVisual { get; private set; }
 		
 		private SpriteRenderer _spriteRenderer;
 		
@@ -72,7 +72,7 @@ namespace Player
 
 			if (itemData.heldItemPrefab != null && itemHoldPoint != null)
 			{
-				_heldItemVisual = Instantiate(itemData.heldItemPrefab.gameObject, itemHoldPoint);
+				heldItemVisual = Instantiate(itemData.heldItemPrefab.gameObject, itemHoldPoint);
 			}
 		}
 
@@ -97,9 +97,9 @@ namespace Player
 
 		public void ClearItem()
 		{
-			if (_heldItemVisual != null)
+			if (heldItemVisual != null)
 			{
-				Destroy(_heldItemVisual);
+				Destroy(heldItemVisual);
 			}
 			heldItem = null;
 		}

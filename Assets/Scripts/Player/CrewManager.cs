@@ -145,8 +145,8 @@ namespace Player
                 Debug.Log($"{member.characterData.characterName} has no item to use.");
                 return;
             }
-            member.heldItem.heldItemPrefab.Execute(member);
-            member.ClearItem();
+            member.heldItemVisual.GetComponent<HeldItem>().Execute(member);
+            //member.ClearItem();
             World.Instance.inventory.UpdateInventory(crewMembers);
         }
         

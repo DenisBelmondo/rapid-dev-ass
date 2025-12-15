@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -21,6 +22,10 @@ namespace Managers
         public GameObject pylonToRemove;
         
         private AudioSource _audioSource;
+
+        [SerializeField] private int largeTriangleThreshold;
+        [SerializeField] private AudioClip smallTriangleSound;
+        [SerializeField] private AudioClip largeTriangleSound;
 
         private void Awake()
         {
@@ -79,8 +84,34 @@ namespace Managers
             if (interactedPylon == activePylons[0])
             {
                 Debug.Log("Triangle formed!");
+                //make some vector2s
+                Vector2 v1 = activePylons[0].transform.position;
+                Vector2 v2 = activePylons[1].transform.position;
+                Vector2 v3 = activePylons[2].transform.position;
+                
+                int tileCount = TriangleRasterization.HowManyTiles(
+                    new System.Numerics.Vector2(v1.x, v1.y),
+                    new System.Numerics.Vector2(v2.x, v2.y),
+                    new System.Numerics.Vector2(v3.x, v3.y)
+                );
+                
                 onTriangleFormed.Invoke(activePylons[0].transform.position, activePylons[1].transform.position, activePylons[2].transform.position);
-                _audioSource.Play();
+
+                AudioClip clipToPlay = null;
+
+                if (tileCount < largeTriangleThreshold)
+                {
+                    clipToPlay = smallTriangleSound;
+                }
+                else
+                {
+                    clipToPlay = largeTriangleSound;
+                }
+
+                if (clipToPlay != null)
+                {
+                    _audioSource.PlayOneShot(clipToPlay);
+                }
                 ClearPylons();
             }
         }

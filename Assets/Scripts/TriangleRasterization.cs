@@ -204,7 +204,7 @@ public static class TriangleRasterization
         return s >= -epsilon && t >= -epsilon && (s + t) <= 1 + epsilon;
     }
 
-    private static float TriangleArea(Vector2 v0, Vector2 v1, Vector2 v2)
+    public static float TriangleArea(Vector2 v0, Vector2 v1, Vector2 v2)
     {
         return Math.Abs((v0.X * (v1.Y - v2.Y) + v1.X * (v2.Y - v0.Y) + v2.X * (v0.Y - v1.Y)) / 2.0f);
     }
